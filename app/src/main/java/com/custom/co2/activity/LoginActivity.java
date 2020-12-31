@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.custom.co2.utils.Constant.setShaedPref;
+import static com.custom.co2.utils.Constant.showProgressDialog;
 import static com.custom.co2.utils.Constant.spConatact;
 import static com.custom.co2.utils.Constant.spDob;
 import static com.custom.co2.utils.Constant.spEmail;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseFirestore db;
     String TAG = "LoginActivity";
     EditText edEmail, edPassword;
+    Dialog progressDialog;
 
 
     @Override
@@ -55,6 +58,8 @@ public class LoginActivity extends AppCompatActivity {
         inits();
         clicks();
         db = FirebaseFirestore.getInstance();
+
+        progressDialog = showProgressDialog(LoginActivity.this);
 
 
     }
@@ -127,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void checkUser(String email, String password) {
-
+        progressDialog.show();
         db.collection("users")
                 .whereEqualTo("Email", email)
                 .whereEqualTo("Password", password)
@@ -146,6 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                                     setShaedPref(LoginActivity.this, spPassword, ds.getString("Password"));
                                     setShaedPref(LoginActivity.this, spConatact, ds.getString("Contact"));
                                     setShaedPref(LoginActivity.this, spDob, ds.getString("DOB"));
+                                    progressDialog.dismiss();
                                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                     finish();
                                 }
@@ -155,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.getResult().size() == 0) {
                             try {
                                 //Toast.makeText(LoginActivity.this, "Invalid username and password", Toast.LENGTH_SHORT).show();
+                                progressDialog.dismiss();
                                 Constant.showAlertDailogBox(LoginActivity.this, "Invalid username and password");
                             } catch (NullPointerException e) {
                                 Log.e(TAG, "NullPointerException: " + e.getMessage());
@@ -166,7 +173,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkEmail(String email, Dialog dialog) {
-
+        progressDialog.show();
         db.collection("users")
                 .whereEqualTo("Email", email)
                 .get()
@@ -178,7 +185,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 if (ds.getString("Email").equals(email)) {
-
+                                    progressDialog.dismiss();
                                     Constant.showAlertDailogBox(LoginActivity.this, "Your Password is : "+ds.get("Password"));
                                     dialog.dismiss();
 
@@ -188,6 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                         //checking if task contains any payload. if no, then update
                         if (task.getResult().size() == 0) {
                             try {
+                                progressDialog.dismiss();
                                 Constant.showAlertDailogBox(LoginActivity.this, "This email is not found. Plase enter your registered email");
                             } catch (NullPointerException e) {
                                 Log.e(TAG, "NullPointerException: " + e.getMessage());

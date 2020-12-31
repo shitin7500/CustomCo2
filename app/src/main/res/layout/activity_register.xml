@@ -167,7 +167,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
-
                 <TextView
                     android:id="@+id/tv_btn_login"
                     android:layout_width="match_parent"
@@ -176,7 +175,7 @@
                     android:layout_marginTop="24dp"
                     android:background="@drawable/bg_btn"
                     android:gravity="center"
-                    android:text="Login"
+                    android:text="Register"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PatternMatcher;
@@ -39,6 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.custom.co2.utils.Constant.showProgressDialog;
+
 public class RegisterActivity extends AppCompatActivity {
 
     TextView btnGotoSignUp;
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
     TextView btnLogin;
     EditText edUsername, edEmail, edContact, edDob, edPassword;
     final Calendar myCalendar = Calendar.getInstance();
+    Dialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
         clicks();
 
         db = FirebaseFirestore.getInstance();
+        progressDialog = showProgressDialog(RegisterActivity.this);
     }
 
     private void clicks() {
@@ -174,18 +179,20 @@ public class RegisterActivity extends AppCompatActivity {
                 .document("user" + System.currentTimeMillis() / 1000).set(user)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(RegisterActivity.this, "Registration successfully", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
                     // Toast.makeText(RegisterActivity.this, "Registration successfully", Toast.LENGTH_SHORT).show();
 
                 }).addOnFailureListener(e -> {
             Log.e(TAG, "registerDataToCloud: " + e.getMessage());
-
-            Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+          //  Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
     private void checkEmail(String email) {
+        progressDialog.show();
 
         db.collection("users")
                 .whereEqualTo("Email", email)
@@ -198,7 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 if (ds.getString("Email").equals(email)) {
-
+                                    progressDialog.dismiss();
                                     Constant.showAlertDailogBox(RegisterActivity.this, "This email is already exist");
 
                                 }
