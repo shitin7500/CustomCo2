@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        inits();
+        init();
         clicks();
         db = FirebaseFirestore.getInstance();
 
@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity {
     private void clicks() {
         btnRegistration.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
-            finish();
         });
 
         btnLogin.setOnClickListener(view -> {
@@ -84,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(LoginActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.setContentView(R.layout.dialog_forgot_password);
         int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
 
@@ -122,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void inits() {
+    private void init() {
         btnRegistration = findViewById(R.id.tv_sign_up);
         edEmail = findViewById(R.id.ed_login_email);
         btnLogin = findViewById(R.id.btn_login);

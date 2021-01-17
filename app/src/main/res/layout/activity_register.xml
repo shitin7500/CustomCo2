@@ -17,16 +17,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:gravity="center"
         android:id="@+id/app_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="56dp"
         android:text="LOGO"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/crd_form"/>
 
     <TextView
         android:id="@+id/tv_dont_have"
@@ -36,22 +37,22 @@
         android:text="Already have an account ?"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tv_goto_login" />
+        app:layout_constraintBottom_toTopOf="@id/tv_goto_login"/>
 
     <TextView
         android:id="@+id/tv_goto_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
         android:gravity="center_horizontal"
         android:paddingHorizontal="4dp"
         android:paddingVertical="4dp"
         android:text="Login"
         android:textColor="@color/purple_700"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/crd_form"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/crd_form"
@@ -59,7 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         app:cardCornerRadius="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_dont_have"
+        app:layout_constraintBottom_toTopOf="@+id/tv_goto_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_logo">
