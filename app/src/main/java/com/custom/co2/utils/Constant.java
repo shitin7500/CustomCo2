@@ -47,12 +47,11 @@ public class Constant {
         new AlertDialog.Builder(context)
                 .setMessage(msg)
                 .setCancelable(false)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
-                    }
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+
+
                 })
-                // .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(android.R.string.no, null)
                 .show();
     }
 
@@ -63,7 +62,7 @@ public class Constant {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.dialog_progress);
-        int width = (int)(context.getResources().getDisplayMetrics().widthPixels*0.90);
+        int width = (int) (context.getResources().getDisplayMetrics().widthPixels * 0.90);
 
         dialog.getWindow().setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT);
 
