@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -77,6 +78,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.ui.IconGenerator;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
@@ -95,6 +97,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -102,14 +105,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.custom.co2.utils.Constant.clearShaedPref;
 import static com.custom.co2.utils.Constant.getShaedPref;
 import static com.custom.co2.utils.Constant.showAlertDailogBox;
+import static com.custom.co2.utils.Constant.showProgressDialog;
 import static com.custom.co2.utils.Constant.spEmail;
 import static com.custom.co2.utils.Constant.spUsername;
 import static com.custom.co2.utils.MapUtils.getScreenWidth;
 
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
-        Placelistener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, DirectionListener,
-        GoogleMap.OnCameraIdleListener, CarListener, NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener {
+        Placelistener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        DirectionListener, GoogleMap.OnCameraIdleListener, CarListener,
+        NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap googleMap;
     private static final long DELAY = 4500;
@@ -121,10 +126,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<String> instruct;
     HashMap<String, String> timeDure;
     List<HashMap<String, String>> timeDureList = new ArrayList<>();
-
+    LinearLayout linMode;
     String trpSource = "";
     String trpDestination = "";
     String trpDestance = "";
+    TextView btn_Driving, btn_Walking;
     private String TAG = "HomeActivity";
     GoogleApiClient mGoogleApiClient;
 
@@ -152,7 +158,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng latLngUpdate;
     LatLng currentLatlong;
-
+    Dialog progressDialog;
     CircleImageView img_profile;
     TextView tvUsername, tvEmail;
     DirectionUtils util;
@@ -168,7 +174,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     @Override
@@ -192,7 +197,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         img_profile = hView.findViewById(R.id.img_profile);
         tvUsername = hView.findViewById(R.id.tvUsername);
         tvEmail = hView.findViewById(R.id.tvEmail);
-
+        progressDialog = showProgressDialog(HomeActivity.this);
 
         tvUsername.setText(getShaedPref(HomeActivity.this, spUsername));
         tvEmail.setText(getShaedPref(HomeActivity.this, spEmail));
@@ -215,6 +220,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txt = findViewById(R.id.txt);
         fetch = findViewById(R.id.fetch);
         btn_proceed = findViewById(R.id.btn_proceed);
+        btn_Driving = findViewById(R.id.btn_Driving);
+        btn_Walking = findViewById(R.id.btn_Walking);
+        btn_Driving.setSelected(true);
+        btn_Walking.setSelected(false);
+        linMode = findViewById(R.id.lin_mode);
         sliding_layout = findViewById(R.id.sliding_layout);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         MapUtils.createTopDownAnimation(this, destCard, null);
@@ -247,7 +257,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (carMarker != null) {
                 carMarker.remove();
             }
-            // Toast.makeText(HomeActivity.this, "back", Toast.LENGTH_SHORT).show();
 
             carMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(mLastLoc.getLatitude(), mLastLoc.getLongitude())).anchor(0.5f, 0.5f).
                     flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.destination)));
@@ -268,6 +277,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+        btn_Driving.setOnClickListener(view -> {
+            btn_Driving.setSelected(true);
+            btn_Walking.setSelected(false);
+            if (placeGet.getSrcLatLng() != null) {
+                String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "driving");
+                DownloadTask downloadTask = new DownloadTask();
+                downloadTask.execute(url);
+            }
+        });
+        btn_Walking.setOnClickListener(view -> {
+            btn_Walking.setSelected(true);
+            btn_Driving.setSelected(false);
+            if (placeGet.getSrcLatLng() != null) {
+                String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "walking");
+                DownloadTask downloadTask = new DownloadTask();
+                downloadTask.execute(url);
+            }
+        });
+
 
         FrameLayout frameLayout = findViewById(R.id.sliderLin);
         marginLayoutParams1 = (ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams();
@@ -294,6 +322,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         btn_proceed.setVisibility(View.VISIBLE);
+        linMode.setVisibility(View.VISIBLE);
 
         PagerAdapter adapter = new UltraPagerAdapter(false, mRecyclerView, onselectVehicleType);
 
@@ -320,7 +349,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         if (place.getSrcLatLng() != null) {
-            String url = getDirectionsUrl(place.getSrcLatLng(), place.getDesrLatLng());
+            String url = getDirectionsUrl(place.getSrcLatLng(), place.getDesrLatLng(), "driving");
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
         }
@@ -519,15 +548,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private String getDirectionsUrl(LatLng origin, LatLng dest) {
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        String sensor = "sensor=false";
-        //  String parameters = str_origin + "&" + str_dest + "&key=AIzaSyB94UQlMeyJz7oOkw26pNtVFh5NZzfyUPU";
-        String parameters = str_origin + "&" + str_dest + "&key=" + getResources().getString(R.string.Map_Api_Key);
-        String output = "json";
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-        Log.e("Route UrL", url);
+    private String getDirectionsUrl(LatLng origin, LatLng dest, String mapType) {
+        String url = "";
+        String strOrigin = "origin=" + origin.latitude + "," + origin.longitude;
+        String strDest = "destination=" + dest.latitude + "," + dest.longitude;
+        String strMode = "";
+        String strKey = "key=" + getResources().getString(R.string.Map_Api_Key);
+
+        if (mapType.equals("driving")) {
+            strMode = "mode=driving";
+            url = "https://maps.googleapis.com/maps/api/directions/json?" + strOrigin + "&" + strDest + "&" + strMode + "&" + strKey;
+        } else {
+            strMode = "mode=walking";
+            url = "https://maps.googleapis.com/maps/api/directions/json?" + strOrigin + "&" + strDest + "&" + strMode + "&" + strKey;
+        }
         return url;
     }
 
@@ -690,6 +724,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         startCarAnimation(polyLineList.get(0).latitude, polyLineList.get(0).longitude);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -1011,22 +1046,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void showMovingCab(final List<LatLng> cabLatLngList) {
         handler = new Handler();
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index < cabLatLngList.size()) {
+        runnable = () -> {
+            if (index < cabLatLngList.size()) {
 
-                    updateCarLocation(cabLatLngList.get(index));
-                    handler.postDelayed(runnable, 1500);
-                    ++index;
+                updateCarLocation(cabLatLngList.get(index));
+                handler.postDelayed(runnable, 1500);
+                ++index;
 
-                } else {
-                    handler.removeCallbacks(runnable);
-                    TripDialog();
-                }
+            } else {
+                handler.removeCallbacks(runnable);
+                TripDialog();
             }
         };
-        handler.postDelayed(runnable, 100);
+        handler.postDelayed(runnable, 1500);
     }
 
     private void updateCarLocation(LatLng latLng) {
@@ -1083,13 +1115,31 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         TextView btnSubmit = dialog.findViewById(R.id.btn_submit);
 
         btnSubmit.setOnClickListener(view -> {
-            dialog.dismiss();
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            progressDialog.show();
+            AddRecored(txtSource.getText().toString(), txtDestination.getText().toString(), txtDistance.getText().toString(), txtCo2.getText().toString(), dialog);
+
         });
-
-
         dialog.show();
+    }
 
+    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog) {
+        Map<String, Object> user = new HashMap<>();
+        user.put("UserEmail", getShaedPref(HomeActivity.this, spEmail));
+        user.put("Source", Source);
+        user.put("Destination", Destination);
+        user.put("Distance", Distance);
+        user.put("Co2", Co2);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Co2-Report")
+                .document("Co2-Report" + System.currentTimeMillis() / 1000).set(user)
+                .addOnSuccessListener(aVoid -> {
+                    dialog.dismiss();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+                }).addOnFailureListener(e -> {
+            Log.e(TAG, "registerDataToCloud: " + e.getMessage());
+            progressDialog.dismiss();
+        });
     }
 
 

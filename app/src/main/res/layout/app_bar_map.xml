@@ -22,6 +22,7 @@
         app:rippleColor="@android:color/holo_red_light"
         app:useCompatPadding="false" />
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/destCard"
         android:layout_width="match_parent"
@@ -34,8 +35,7 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="10dp"
         app:cardMaxElevation="10dp"
-        app:cardPreventCornerOverlap="true"
-        tools:visibility="gone">
+        app:cardPreventCornerOverlap="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,6 +68,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
@@ -91,7 +92,6 @@
             <Button
                 android:id="@+id/btn_proceed"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/margin_16dp"
@@ -102,6 +102,7 @@
                 android:text="proceed"
                 android:textColor="@color/white"
                 android:textSize="@dimen/margin_14sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -190,6 +191,45 @@
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
+
+    <LinearLayout
+        android:id="@+id/lin_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_8dp"
+        android:layout_marginTop="64dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/btn_Driving"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dimen_4dp"
+            android:layout_weight="1"
+android:textColor="@drawable/btn_text_selection"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:text="Driving"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_Walking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:layout_weight="1"
+            android:textColor="@drawable/btn_text_selection"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:text="Walking"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

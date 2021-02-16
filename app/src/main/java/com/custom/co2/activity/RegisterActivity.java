@@ -182,13 +182,11 @@ public class RegisterActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
-                    // Toast.makeText(RegisterActivity.this, "Registration successfully", Toast.LENGTH_SHORT).show();
 
                 }).addOnFailureListener(e -> {
             Log.e(TAG, "registerDataToCloud: " + e.getMessage());
             progressDialog.dismiss();
-          //  Toast.makeText(RegisterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+           });
     }
 
     private void checkEmail(String email) {

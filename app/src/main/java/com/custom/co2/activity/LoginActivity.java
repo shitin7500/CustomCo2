@@ -143,8 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 if (ds.getString("Email").equals(email)) {
-//                                    Toast.makeText(LoginActivity.this, "Login successfully", Toast.LENGTH_SHORT).show();
-//                                    Constant.showAlertDailogBox(LoginActivity.this,"Login successfully");
                                     setShaedPref(LoginActivity.this, spUsername, ds.getString("Username"));
                                     setShaedPref(LoginActivity.this, spEmail, ds.getString("Email"));
                                     setShaedPref(LoginActivity.this, spPassword, ds.getString("Password"));
