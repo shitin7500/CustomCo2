@@ -107,6 +107,7 @@ import static com.custom.co2.utils.Constant.getShaedPref;
 import static com.custom.co2.utils.Constant.showAlertDailogBox;
 import static com.custom.co2.utils.Constant.showProgressDialog;
 import static com.custom.co2.utils.Constant.spEmail;
+import static com.custom.co2.utils.Constant.spUserId;
 import static com.custom.co2.utils.Constant.spUsername;
 import static com.custom.co2.utils.MapUtils.getScreenWidth;
 
@@ -459,7 +460,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         }
-
+        if (tvUsername != null && tvEmail != null) {
+            tvUsername.setText(getShaedPref(HomeActivity.this, spUsername));
+            tvEmail.setText(getShaedPref(HomeActivity.this, spEmail));
+        }
 
     }
 
@@ -484,11 +488,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         DrawerLayout drawer = findViewById(R.id.drawer_layout1);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (sliding_layout != null && sliding_layout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            mRecyclerView.setAlpha(1f);
-            fetch.setAlpha(1f);
-            //detLin.setAlpha(0f);
-            sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        } else if (btn_Driving.getVisibility() == View.VISIBLE && btn_proceed.getVisibility() == View.VISIBLE) {
+            googleMap.clear();
+            btn_Driving.setVisibility(View.GONE);
+            btn_Walking.setVisibility(View.GONE);
+            btn_proceed.setVisibility(View.GONE);
+            destCard.setVisibility(View.VISIBLE);
+            handler.removeCallbacks(runnable);
+            dest.setEnabled(true);
+
         } else {
             super.onBackPressed();
             //  startActivity(new Intent(HomeActivity.this, MainActivity.class));
@@ -608,7 +616,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         if (id == R.id.nav_home) {
-            startActivity(new Intent(HomeActivity.this, HomeActivity.class));
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        } else if (id == R.id.nav_Profile) {
+            startActivity(new Intent(getApplicationContext(), UpdateProfileActivity.class));
+        } else if (id == R.id.nav_Score_Board) {
+            startActivity(new Intent(getApplicationContext(), StatisticsActivity.class));
         } else if (id == R.id.nav_Logout) {
             new AlertDialog.Builder(HomeActivity.this)
                     .setMessage("You want to Logout?")
@@ -840,16 +852,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             carMarker.remove();
         }
 
-      /*  carMarker = googleMap.addMarker(new MarkerOptions().position(latLng)
-                .anchor(0.5f, 0.5f)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.source)));
-        // Log.e("lalallatLng", latLng + " " + polyLineList.get(polyLineList.size() - 1) + "   " + String.valueOf(polyLineList.get(0)));
-        Log.e("lalallatLng", placeGet.getSrcLat() + "," + placeGet.getSrcLon() + "    " + placeGet.getDestLat() + "," + placeGet.getDestLon());
-        desMarker = googleMap.addMarker(new MarkerOptions().position(polyLineList.get(polyLineList.size() - 1))
-                .anchor(0.5f, 0.5f)
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.destination)));*/
-
-
         originMarker = addOriginDestinationMarkerAndGet(latLng);
         originMarker.setAnchor(1f, 1f);
         destinationMarker = addOriginDestinationMarkerAndGet(polyLineList.get(polyLineList.size() - 1));
@@ -1050,7 +1052,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (index < cabLatLngList.size()) {
 
                 updateCarLocation(cabLatLngList.get(index));
-                handler.postDelayed(runnable, 1500);
+                handler.postDelayed(runnable, 900);
                 ++index;
 
             } else {
@@ -1083,9 +1085,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             multiplier * currentLatLng.longitude + (1 - multiplier) * previousLatLng.longitude);
                     movingCabMarker.setPosition(nextLocation);
                     float rotation = MapUtils.getRotation(previousLatLng, nextLocation);
-                    if (!Float.isNaN(rotation)) {
-                        movingCabMarker.setRotation(rotation);
-                    }
+                    //  if (!Float.isNaN(rotation)) {
+                    movingCabMarker.setRotation(rotation);
+                    //     }
                     movingCabMarker.setAnchor(0.5f, 0.5f);
 //                    animateCamera(nextLocation);
                 }
@@ -1124,7 +1126,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog) {
         Map<String, Object> user = new HashMap<>();
-        user.put("UserEmail", getShaedPref(HomeActivity.this, spEmail));
+        user.put("UserID", getShaedPref(HomeActivity.this, spUserId));
         user.put("Source", Source);
         user.put("Destination", Destination);
         user.put("Distance", Distance);

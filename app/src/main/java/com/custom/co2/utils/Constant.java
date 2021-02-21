@@ -15,6 +15,7 @@ import com.custom.co2.activity.LoginActivity;
 
 public class Constant {
 
+    public static String spUserId = "userId";
     public static String spUsername = "username";
     public static String spEmail = "email";
     public static String spPassword = "password";

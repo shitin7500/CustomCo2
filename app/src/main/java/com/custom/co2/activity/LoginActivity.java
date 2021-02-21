@@ -1,4 +1,4 @@
-package com.custom.co2.activity;
+    package com.custom.co2.activity;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -39,6 +39,7 @@ import static com.custom.co2.utils.Constant.spConatact;
 import static com.custom.co2.utils.Constant.spDob;
 import static com.custom.co2.utils.Constant.spEmail;
 import static com.custom.co2.utils.Constant.spPassword;
+import static com.custom.co2.utils.Constant.spUserId;
 import static com.custom.co2.utils.Constant.spUsername;
 
 public class LoginActivity extends AppCompatActivity {
@@ -143,14 +144,15 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 if (ds.getString("Email").equals(email)) {
+                                    setShaedPref(LoginActivity.this, spUserId, ds.getId());
                                     setShaedPref(LoginActivity.this, spUsername, ds.getString("Username"));
                                     setShaedPref(LoginActivity.this, spEmail, ds.getString("Email"));
                                     setShaedPref(LoginActivity.this, spPassword, ds.getString("Password"));
                                     setShaedPref(LoginActivity.this, spConatact, ds.getString("Contact"));
                                     setShaedPref(LoginActivity.this, spDob, ds.getString("DOB"));
                                     progressDialog.dismiss();
-                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                    finish();
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
                                 }
                             }
                         }

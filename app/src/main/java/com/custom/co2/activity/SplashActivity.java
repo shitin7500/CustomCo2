@@ -129,8 +129,7 @@ public class SplashActivity extends AppCompatActivity implements
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
                 } else {
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                    finish();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 }
 
             }
