@@ -81,10 +81,8 @@ public class StatisticsActivity extends AppCompatActivity {
                         QuerySnapshot document = task.getResult();
                         if (!document.isEmpty()) {
 
-                            for (int i = 0; i < document.getDocuments().size(); i++) {
+                            if (document.getDocuments().size() > 0) {
                                 arrayList.addAll(document.getDocuments());
-                            }
-                            if (arrayList.size() > 0) {
                                 statisticdapter.notifyDataSetChanged();
                                 findViewById(R.id.txtNoData).setVisibility(View.GONE);
                             } else {
