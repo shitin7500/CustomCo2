@@ -3,5 +3,5 @@
     <item android:color="@color/white" android:state_pressed="true" /> <!-- pressed -->
     <item android:color="@color/white" android:state_focused="true" /> <!-- focused -->
     <item android:color="@color/white" android:state_selected="true" /> <!-- hovered -->
-    <item android:color="@color/purple_700" /> <!-- default -->
+    <item android:color="@color/colorPrimaryDark" /> <!-- default -->
 </selector>

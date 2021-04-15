@@ -16,18 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:gravity="center"
+    <ImageView
         android:id="@+id/app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGO"
-        android:textColor="@color/white"
-        android:textSize="24sp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/app_lcon"
+        app:layout_constraintBottom_toTopOf="@id/crd_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/crd_form"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_dont_have"
@@ -37,7 +35,7 @@
         android:text="Already have an account ?"
         android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tv_goto_login"/>
+        app:layout_constraintBottom_toTopOf="@id/tv_goto_login" />
 
     <TextView
         android:id="@+id/tv_goto_login"
@@ -47,12 +45,12 @@
         android:paddingHorizontal="4dp"
         android:paddingVertical="4dp"
         android:text="Login"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/crd_form"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/crd_form" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/crd_form"
@@ -82,14 +80,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="Register"
-                    android:textColor="@color/purple_700"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="32dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
                     android:background="@color/white"
                     android:hint="Username">
 
@@ -97,9 +95,9 @@
                         android:id="@+id/ed_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
                         android:background="@color/white"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -128,12 +126,12 @@
 
                     <EditText
                         android:id="@+id/ed_dob"
-                        android:singleLine="true"
-                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:inputType="text" />
+                        android:focusable="false"
+                        android:inputType="text"
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -145,11 +143,11 @@
 
                     <EditText
                         android:id="@+id/ed_email"
-                        android:singleLine="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -160,11 +158,26 @@
 
                     <EditText
                         android:id="@+id/ed_password"
-                        android:singleLine="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="Confirm Password">
+
+                    <EditText
+                        android:id="@+id/ed_confirm_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 

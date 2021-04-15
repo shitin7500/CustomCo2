@@ -1,42 +1,30 @@
 package com.custom.co2.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PatternMatcher;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.custom.co2.R;
 import com.custom.co2.utils.Constant;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.events.Event;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -48,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseFirestore db;
     String TAG = "RegisterActivity";
     TextView btnLogin;
-    EditText edUsername, edEmail, edContact, edDob, edPassword;
+    EditText edUsername, edEmail, edContact, edDob, edPassword, edConfirmPassword;
     final Calendar myCalendar = Calendar.getInstance();
     Dialog progressDialog;
 
@@ -128,6 +116,11 @@ public class RegisterActivity extends AppCompatActivity {
             edPassword.requestFocus();
             return false;
 
+        } else if (!edConfirmPassword.getText().toString().equals(edPassword.getText().toString())) {
+            edConfirmPassword.setError("Password don't match");
+            edConfirmPassword.requestFocus();
+            return false;
+
         }
 
 
@@ -138,6 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnGotoSignUp = findViewById(R.id.tv_goto_login);
         btnLogin = findViewById(R.id.tv_btn_login);
         edUsername = findViewById(R.id.ed_username);
+        edConfirmPassword = findViewById(R.id.ed_confirm_password);
         edEmail = findViewById(R.id.ed_email);
         edPassword = findViewById(R.id.ed_password);
         edDob = findViewById(R.id.ed_dob);

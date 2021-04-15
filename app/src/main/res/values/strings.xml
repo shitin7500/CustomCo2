@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Custom Co2</string>
+    <string name="app_name">PROENV- Y</string>
 
     <string name="Map_Api_Key">AIzaSyClEy7iOrtMOyD7_hLoALTz6o_1vur7mYc</string>
 <!--    <string name="Map_Api_Key">AIzaSyCYH_ZrSBHf3r_Ov04IuHNS8TaJDb-Fp_M</string>-->
@@ -18,5 +18,22 @@
     <string name="score_board">Statastic</string>
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
+    <string name="change_password">Change Password</string>
+
+    <array name="vehicleType">
+        <item>Compact car</item>
+        <item>Mid range</item>
+        <item>Luxury/SUV/Van</item>
+
+    </array>
+
+    <array name="FuleType">
+        <item>Petrol</item>
+        <item>Diesel</item>
+        <item>Hybrid</item>
+        <item>PHEV</item>
+        <item>Electric</item>
+
+    </array>
 
 </resources>

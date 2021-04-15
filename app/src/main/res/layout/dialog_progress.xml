@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:text="Please Wait"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -99,7 +99,7 @@
                 android:background="@drawable/bg_btn"
                 android:paddingLeft="@dimen/margin_60dp"
                 android:paddingRight="@dimen/margin_60dp"
-                android:text="proceed"
+                android:text="Start"
                 android:textColor="@color/white"
                 android:textSize="@dimen/margin_14sp"
                 android:visibility="gone"
@@ -198,19 +198,20 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_8dp"
         android:layout_marginTop="64dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/btn_Driving"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dimen_4dp"
+            android:layout_marginEnd="@dimen/margin_4dp"
             android:layout_weight="1"
-android:textColor="@drawable/btn_text_selection"
             android:background="@drawable/btn_bg_selection"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
             android:text="Driving"
+            android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold" />
 
@@ -219,12 +220,27 @@ android:textColor="@drawable/btn_text_selection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_4dp"
+            android:layout_marginEnd="@dimen/margin_4dp"
             android:layout_weight="1"
-            android:textColor="@drawable/btn_text_selection"
             android:background="@drawable/btn_bg_selection"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
             android:text="Walking"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_cycle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dimen_4dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:text="Cycling"
+            android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold" />
 

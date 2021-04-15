@@ -16,18 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:gravity="center"
+    <ImageView
         android:id="@+id/app_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="LOGO"
-        android:textColor="@color/white"
-        android:textSize="24sp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/app_lcon"
+        app:layout_constraintBottom_toTopOf="@id/crd_form"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/crd_form"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/crd_form"
@@ -57,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="Update Profile"
-                    android:textColor="@color/purple_700"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 

@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:padding="@dimen/margin_16dp">
 
     <TextView
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
         android:text="Trip Complated"
-        android:textColor="@color/purple_700"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,17 +90,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDestenceTitle" />
 
+    <Spinner
+        android:id="@+id/spVehicleType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="@dimen/dimen_4dp"
+        android:background="@drawable/spinner_background"
+        android:entries="@array/vehicleType"
+        android:paddingVertical="@dimen/margin_8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDestence" />
+
+    <Spinner
+        android:id="@+id/spFuleType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:background="@drawable/spinner_background"
+        android:entries="@array/FuleType"
+        android:paddingVertical="@dimen/margin_8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spVehicleType" />
+
 
     <TextView
         android:id="@+id/txtCO2Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
+
         android:text="Total Co2"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDestence" />
+        app:layout_constraintTop_toBottomOf="@+id/spFuleType" />
 
     <TextView
         android:id="@+id/txtCO2"
@@ -113,6 +137,30 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtCO2Title" />
+
+    <TextView
+        android:id="@+id/txtdec1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_4dp"
+        android:text="Disclaimer for electric/phev  cars - The following results are based on the assumption that the energy mix to charge the vehicle is CERTIFIED GREEN ELECTRICITY."
+        android:textColor="@color/colorRed"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCO2" />
+
+    <TextView
+        android:id="@+id/txtdec2"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:text="Disclaimer (For everyone) - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year."
+        android:textColor="@color/colorRed"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtdec1" />
 
     <TextView
         android:id="@+id/btn_submit"
@@ -128,6 +176,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCO2" />
+        app:layout_constraintTop_toBottomOf="@+id/txtdec2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

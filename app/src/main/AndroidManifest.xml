@@ -30,6 +30,7 @@
         <activity android:name=".activity.PickLocation" />
         <activity android:name=".activity.UpdateProfileActivity" />
         <activity android:name=".activity.StatisticsActivity" />
+        <activity android:name=".activity.changepasswordactivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
