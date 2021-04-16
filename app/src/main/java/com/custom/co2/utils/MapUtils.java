@@ -32,7 +32,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.Polyline;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -443,4 +442,5 @@ public class MapUtils {
         }
         return rotation;
     }
+
 }
