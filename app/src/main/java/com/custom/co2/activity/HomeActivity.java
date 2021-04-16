@@ -96,9 +96,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -130,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     String trpSource = "";
     String trpDestination = "";
     String trpDestance = "";
-    TextView btn_Driving, btn_Walking, btn_cycle;
+    ImageView btn_car, btn_Walking, btn_cycle, btn_Bus, btn_Flight, btn_Train;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
     CardView destCard;
@@ -203,6 +206,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void onAnimationStart(Animation animation) {
             dest.setEnabled(true);
             destCard.setVisibility(View.VISIBLE);
+            linMode.setVisibility(View.GONE);
         }
 
         @Override
@@ -264,7 +268,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng currentLatLng = null;
     private Runnable runnable;
     private int index = 0;
-    private String markerFlag = "Driving";
+    private String markerFlag = "BUS";
 
 
     protected void createLocationRequest() {
@@ -322,12 +326,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txt = findViewById(R.id.txt);
         fetch = findViewById(R.id.fetch);
         btn_proceed = findViewById(R.id.btn_proceed);
-        btn_Driving = findViewById(R.id.btn_Driving);
+        btn_car = findViewById(R.id.btn_car);
         btn_Walking = findViewById(R.id.btn_Walking);
         btn_cycle = findViewById(R.id.btn_cycle);
-        btn_Driving.setSelected(true);
-        btn_Walking.setSelected(false);
-        btn_cycle.setSelected(false);
+        btn_Bus = findViewById(R.id.btn_bus);
+        btn_Flight = findViewById(R.id.btn_flight);
+        btn_Train = findViewById(R.id.btn_train);
+        btn_Bus.setSelected(true);
         linMode = findViewById(R.id.lin_mode);
         sliding_layout = findViewById(R.id.sliding_layout);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -381,9 +386,54 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
-        btn_Driving.setOnClickListener(view -> {
-            markerFlag = "Driving";
-            btn_Driving.setSelected(true);
+        btn_Bus.setOnClickListener(view -> {
+            markerFlag = "BUS";
+            btn_Bus.setSelected(true);
+            btn_car.setSelected(false);
+            btn_Train.setSelected(false);
+            btn_Flight.setSelected(false);
+            btn_Walking.setSelected(false);
+            btn_cycle.setSelected(false);
+            if (placeGet.getSrcLatLng() != null) {
+                String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "driving");
+                DownloadTask downloadTask = new DownloadTask();
+                downloadTask.execute(url);
+            }
+        });
+        btn_car.setOnClickListener(view -> {
+            markerFlag = "CAR";
+            btn_Bus.setSelected(false);
+            btn_car.setSelected(true);
+            btn_Train.setSelected(false);
+            btn_Flight.setSelected(false);
+            btn_Walking.setSelected(false);
+            btn_cycle.setSelected(false);
+            if (placeGet.getSrcLatLng() != null) {
+                String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "driving");
+                DownloadTask downloadTask = new DownloadTask();
+                downloadTask.execute(url);
+            }
+        });
+        btn_Train.setOnClickListener(view -> {
+            markerFlag = "TRAIN";
+            btn_Bus.setSelected(false);
+            btn_car.setSelected(false);
+            btn_Train.setSelected(true);
+            btn_Flight.setSelected(false);
+            btn_Walking.setSelected(false);
+            btn_cycle.setSelected(false);
+            if (placeGet.getSrcLatLng() != null) {
+                String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "driving");
+                DownloadTask downloadTask = new DownloadTask();
+                downloadTask.execute(url);
+            }
+        });
+        btn_Flight.setOnClickListener(view -> {
+            markerFlag = "FLIGHT";
+            btn_Bus.setSelected(false);
+            btn_car.setSelected(false);
+            btn_Train.setSelected(false);
+            btn_Flight.setSelected(true);
             btn_Walking.setSelected(false);
             btn_cycle.setSelected(false);
             if (placeGet.getSrcLatLng() != null) {
@@ -393,9 +443,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         btn_Walking.setOnClickListener(view -> {
-            markerFlag = "Walking";
+            markerFlag = "WALK";
+            btn_Bus.setSelected(false);
+            btn_car.setSelected(false);
+            btn_Train.setSelected(false);
+            btn_Flight.setSelected(false);
             btn_Walking.setSelected(true);
-            btn_Driving.setSelected(false);
             btn_cycle.setSelected(false);
             if (placeGet.getSrcLatLng() != null) {
                 String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "walking");
@@ -404,9 +457,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
         btn_cycle.setOnClickListener(view -> {
-            markerFlag = "Cycling";
+            markerFlag = "CYCLE";
+            btn_Bus.setSelected(false);
+            btn_car.setSelected(false);
+            btn_Train.setSelected(false);
+            btn_Flight.setSelected(false);
             btn_Walking.setSelected(false);
-            btn_Driving.setSelected(false);
             btn_cycle.setSelected(true);
             if (placeGet.getSrcLatLng() != null) {
                 String url = getDirectionsUrl(placeGet.getSrcLatLng(), placeGet.getDesrLatLng(), "walking");
@@ -434,7 +490,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         btn_proceed.setVisibility(View.VISIBLE);
-        linMode.setVisibility(View.VISIBLE);
+
 
         PagerAdapter adapter = new UltraPagerAdapter(false, mRecyclerView, onselectVehicleType);
 
@@ -455,9 +511,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             showMovingCab(polyLineList);
                         }
                     }, 100);
-                    btn_Driving.setVisibility(View.GONE);
-                    btn_Walking.setVisibility(View.GONE);
-                    btn_cycle.setVisibility(View.GONE);
+                    linMode.setVisibility(View.GONE);
                     btn_proceed.setText("Stop");
                 } else {
 
@@ -531,13 +585,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         DrawerLayout drawer = findViewById(R.id.drawer_layout1);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if (btn_Driving.getVisibility() == View.VISIBLE && btn_proceed.getVisibility() == View.VISIBLE) {
+        } else if (btn_car.getVisibility() == View.VISIBLE && btn_proceed.getVisibility() == View.VISIBLE) {
             googleMap.clear();
-            btn_Driving.setVisibility(View.GONE);
-            btn_Walking.setVisibility(View.GONE);
-            btn_cycle.setVisibility(View.GONE);
             btn_proceed.setVisibility(View.GONE);
             destCard.setVisibility(View.VISIBLE);
+            linMode.setVisibility(View.GONE);
+
             handler.removeCallbacks(runnable);
             dest.setEnabled(true);
 
@@ -921,6 +974,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .icon(BitmapDescriptorFactory.fromBitmap(iconFactory_righ2.makeIcon("destination2"))));
         desMarker3.setVisible(false);
 
+        double tempDistance = 0.0;
+        tempDistance = Double.parseDouble(RideDistance.replace(" km", "").replace(" m", ""));
+
+        if (tempDistance > 500) {
+            btn_Flight.setVisibility(View.VISIBLE);
+            btn_Walking.setVisibility(View.GONE);
+            btn_cycle.setVisibility(View.GONE);
+
+        } else if (tempDistance > 50 && tempDistance <= 500) {
+
+            btn_Flight.setVisibility(View.GONE);
+            btn_Walking.setVisibility(View.GONE);
+            btn_cycle.setVisibility(View.GONE);
+
+        } else {
+
+            btn_Flight.setVisibility(View.GONE);
+            btn_Walking.setVisibility(View.VISIBLE);
+            btn_cycle.setVisibility(View.VISIBLE);
+
+        }
+
+        linMode.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -1046,6 +1123,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void TripDialog() {
+        Boolean isCo2 = false;
+
         final Dialog dialog = new Dialog(HomeActivity.this);
         dialog.setContentView(R.layout.dialog_trip_complate);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
@@ -1066,17 +1145,40 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Spinner spFuleType = dialog.findViewById(R.id.spFuleType);
         Spinner spVehicleType = dialog.findViewById(R.id.spVehicleType);
 
-
-        if (markerFlag.equals("Driving")) {
+        if (markerFlag.equals("CAR")) {
+            isCo2 = true;
             spFuleType.setVisibility(View.VISIBLE);
             spVehicleType.setVisibility(View.VISIBLE);
+        } else if (markerFlag.equals("BUS") || markerFlag.equals("TRAIN") || markerFlag.equals("FLIGHT")) {
+            isCo2 = true;
+            spFuleType.setVisibility(View.GONE);
+            spVehicleType.setVisibility(View.GONE);
+            double BasicCo2 = 0.0;
+            double co2value;
+
+
+            if (markerFlag.equals("BUS")) {
+                BasicCo2 = 0.089;
+            } else if (markerFlag.equals("TRAIN")) {
+                BasicCo2 = 0.06;
+            } else {
+                BasicCo2 = 0.1753;
+            }
+
+            if (RideDistance.contains(" km")) {
+                co2value = BasicCo2 * Double.parseDouble(RideDistance.replace(" km", ""));
+            } else {
+                co2value = BasicCo2 * (Double.parseDouble(RideDistance.replace(" m", "")) / 1000);
+            }
+            txtCo2.setText(String.format("%.2f", co2value));
         } else {
+            isCo2 = false;
             spFuleType.setVisibility(View.GONE);
             spVehicleType.setVisibility(View.GONE);
             txtCo2Title.setText("Total Calories");
             double basiccalories;
             double co2value;
-            if (markerFlag.equals("Walking")) {
+            if (markerFlag.equals("WALK")) {
                 basiccalories = 47;
             } else {
                 basiccalories = 22;
@@ -1120,9 +1222,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         TextView btnSubmit = dialog.findViewById(R.id.btn_submit);
 
+        Boolean finalIsCo = isCo2;
         btnSubmit.setOnClickListener(view -> {
             progressDialog.show();
-            AddRecored(txtSource.getText().toString(), txtDestination.getText().toString(), txtDistance.getText().toString(), txtCo2.getText().toString(), dialog);
+            AddRecored(txtSource.getText().toString(),
+                    txtDestination.getText().toString(),
+                    txtDistance.getText().toString(),
+                    txtCo2.getText().toString(),
+                    dialog,
+                    finalIsCo,
+                    spFuleType.getSelectedItem().toString(),
+                    spVehicleType.getSelectedItem().toString(), markerFlag
+
+            );
 
         });
         dialog.show();
@@ -1175,13 +1287,25 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return co2value;
     }
 
-    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog) {
+    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2, String FuleType, String VehicleType, String rideType) {
+
+        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         Map<String, Object> user = new HashMap<>();
         user.put("UserID", getShaedPref(HomeActivity.this, spUserId));
         user.put("Source", Source);
         user.put("Destination", Destination);
         user.put("Distance", Distance);
+        user.put("Co2Type", isCo2);
         user.put("Co2", Co2);
+        user.put("RideType", rideType);
+        if (markerFlag.equals("CAR")) {
+            user.put("VehicleType", VehicleType);
+            user.put("FuleType", FuleType);
+        } else {
+            user.put("VehicleType", "");
+            user.put("FuleType", "");
+        }
+        user.put("Date", date);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Co2-Report")
                 .document("Co2-Report" + System.currentTimeMillis() / 1000).set(user)
@@ -1202,13 +1326,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Marker addCarMarkerAndGet(LatLng latLng) {
 
-        if (markerFlag.equals("Driving")) {
+        if (markerFlag.equals("CAR")) {
             return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.new_car_small)));
 
-        } else if (markerFlag.equals("Walking")) {
+        } else if (markerFlag.equals("BUS")) {
+            return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bus)));
+        } else if (markerFlag.equals("TRAIN")) {
+            return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_train)));
+        } else if (markerFlag.equals("FLIGHT")) {
+            return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_air_plan)));
+        } else if (markerFlag.equals("WALK")) {
             return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_man)));
         } else
-            return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bike2)));
+            return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bike)));
     }
 
     private Marker addOriginDestinationMarkerAndGet(LatLng latLng) {

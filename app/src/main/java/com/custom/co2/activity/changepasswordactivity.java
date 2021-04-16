@@ -95,7 +95,7 @@ public class changepasswordactivity extends AppCompatActivity {
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(changepasswordactivity.this, "Change Password Successfully", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
-
+                    finish();
                 }).addOnFailureListener(e -> {
             progressDialog.dismiss();
         });
@@ -117,8 +117,6 @@ public class changepasswordactivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot ds : task.getResult()) {
                                 if (ds.getString("Password").equals(password)) {
-
-
                                 }
                             }
                         }

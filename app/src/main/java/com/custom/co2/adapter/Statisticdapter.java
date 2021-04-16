@@ -38,6 +38,17 @@ public class Statisticdapter extends RecyclerView.Adapter<Statisticdapter.ViewHo
         holder.txtDestination.setText(arrayListData.get(position).getString("Destination"));
         holder.txtDistance.setText(arrayListData.get(position).getString("Distance"));
         holder.txtCO2.setText(arrayListData.get(position).getString("Co2"));
+
+        if (arrayListData.get(position).getString("RideType").equals("CAR"))
+            holder.txtVehicle.setText(arrayListData.get(position).getString("RideType") + "(" + (arrayListData.get(position).getString("VehicleType") + "/" + arrayListData.get(position).getString("FuleType")) + ")");
+        else
+            holder.txtVehicle.setText(arrayListData.get(position).getString("RideType"));
+
+        holder.txtDate.setText(arrayListData.get(position).getString("Date"));
+        if (arrayListData.get(position).getBoolean("Co2Type"))
+            holder.txtCo2Title.setText("Co2");
+        else
+            holder.txtCo2Title.setText("Calories");
     }
 
 
@@ -48,7 +59,7 @@ public class Statisticdapter extends RecyclerView.Adapter<Statisticdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtsource, txtDestination, txtDistance, txtCO2;
+        public TextView txtsource, txtDestination, txtDistance, txtCO2, txtCo2Title, txtVehicle, txtDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +67,9 @@ public class Statisticdapter extends RecyclerView.Adapter<Statisticdapter.ViewHo
             txtDestination = (TextView) itemView.findViewById(R.id.txtDestination);
             txtDistance = (TextView) itemView.findViewById(R.id.txtDistance);
             txtCO2 = (TextView) itemView.findViewById(R.id.txtCO2);
+            txtCo2Title = (TextView) itemView.findViewById(R.id.txtCo2Title);
+            txtVehicle = (TextView) itemView.findViewById(R.id.txtVehicle);
+            txtDate = (TextView) itemView.findViewById(R.id.txtDate);
         }
     }
 }

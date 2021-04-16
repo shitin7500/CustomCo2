@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="124dp"
         android:layout_marginEnd="15dp"
         android:transitionName="dest"
         app:cardBackgroundColor="@android:color/white"
@@ -195,54 +195,106 @@
     <LinearLayout
         android:id="@+id/lin_mode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:layout_marginHorizontal="@dimen/margin_8dp"
         android:layout_marginTop="64dp"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/btn_Driving"
+        <ImageView
+            android:id="@+id/btn_bus"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_4dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:layout_marginHorizontal="2dp"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_bus" />
+
+        <ImageView
+            android:id="@+id/btn_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="@drawable/btn_bg_selection"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
-            android:text="Driving"
             android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_car" />
 
-        <TextView
-            android:id="@+id/btn_Walking"
+
+        <ImageView
+            android:id="@+id/btn_train"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_4dp"
-            android:layout_marginEnd="@dimen/margin_4dp"
+            android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="@drawable/btn_bg_selection"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
-            android:text="Walking"
             android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_train" />
 
-        <TextView
+        <ImageView
+            android:id="@+id/btn_flight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_flait" />
+
+
+        <ImageView
             android:id="@+id/btn_cycle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dimen_4dp"
+            android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
+            android:adjustViewBounds="true"
             android:background="@drawable/btn_bg_selection"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
-            android:text="Cycling"
             android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_bicycle" />
+
+        <ImageView
+            android:id="@+id/btn_Walking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_walk" />
 
 
     </LinearLayout>
