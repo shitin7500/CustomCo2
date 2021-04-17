@@ -230,6 +230,7 @@ public class PlaceAutocompleteAdapter extends RecyclerView.Adapter<PlaceAutocomp
         return new PlaceViewHolder(v0);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder mPredictionHolder, @SuppressLint("RecyclerView") final int i) {
         switch (getItemViewType(i)) {

@@ -195,15 +195,13 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.getResult().size() == 0) {
                             try {
                                 progressDialog.dismiss();
-                                Constant.showAlertDailogBox(LoginActivity.this, "This email is not found. Plase enter your registered email");
+                                Constant.showAlertDailogBox(LoginActivity.this, "This email is not found. Please enter your registered email");
                             } catch (NullPointerException e) {
                                 Log.e(TAG, "NullPointerException: " + e.getMessage());
                             }
                         }
                     }
                 });
-
-
     }
 
 }

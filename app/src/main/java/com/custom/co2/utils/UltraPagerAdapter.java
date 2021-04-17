@@ -60,7 +60,7 @@ public class UltraPagerAdapter extends PagerAdapter {
         JSONObject ob = new JSONObject();
         try {
             ob.put("name", "Sedan");
-            ob.put("img", R.mipmap.car);
+            ob.put("img", R.mipmap.new_car_small);
         } catch (JSONException e) {
             e.printStackTrace();
         }

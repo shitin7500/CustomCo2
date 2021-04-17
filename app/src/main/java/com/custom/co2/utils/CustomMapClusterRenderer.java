@@ -48,7 +48,7 @@ public class CustomMapClusterRenderer <T extends ClusterItem> extends DefaultClu
     @Override
     protected void onBeforeClusterItemRendered(T item,
                                                MarkerOptions markerOptions) {
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.car));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.new_car_small));
         super.onBeforeClusterItemRendered(item, markerOptions);
     }
 }
