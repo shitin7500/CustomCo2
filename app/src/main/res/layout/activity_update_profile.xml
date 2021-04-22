@@ -7,7 +7,6 @@
     tools:context=".activity.StatisticsActivity">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:background="@drawable/bg_bottom_circle"

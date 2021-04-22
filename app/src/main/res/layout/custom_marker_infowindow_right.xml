@@ -35,7 +35,6 @@
                 android:weightSum="1">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/ly_card"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.4"
