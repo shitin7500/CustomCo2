@@ -1052,7 +1052,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void showMovingCab(final List<LatLng> cabLatLngList) {
         handler = new Handler();
         runnable = () -> {
-            if (index < cabLatLngList.size()) {
+            if (cabLatLngList!=null && index < cabLatLngList.size()) {
 
                 updateCarLocation(cabLatLngList.get(index));
                 handler.postDelayed(runnable, 900);
