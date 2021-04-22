@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,9 +37,13 @@ public class StatisticsActivity extends AppCompatActivity {
     String TAG = "RegisterActivity";
     Statisticdapter statisticdapter;
     ImageView btnBack, filter;
+    ConstraintLayout crdCount;
     Dialog progressDialog;
-    ArrayList arrayList = new ArrayList<DocumentSnapshot>();
+    ArrayList<DocumentSnapshot> arrayList = new ArrayList<DocumentSnapshot>();
     RecyclerView recStatistic;
+    TextView txtCO2, txtCalories;
+
+    double totalCO2 = 0.0, totalCalories = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,11 @@ public class StatisticsActivity extends AppCompatActivity {
         recStatistic = findViewById(R.id.recStatistic);
         btnBack = findViewById(R.id.iv_back);
         filter = findViewById(R.id.iv_filter);
+
+        crdCount = findViewById(R.id.crd_count);
+        txtCO2 = findViewById(R.id.txtCO2);
+        txtCalories = findViewById(R.id.txtCalories);
+
         recStatistic.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         statisticdapter = new Statisticdapter(this, arrayList);
         recStatistic.setAdapter(statisticdapter);
@@ -119,6 +129,8 @@ public class StatisticsActivity extends AppCompatActivity {
     private void getStatisticsList(String Date) {
         progressDialog.show();
         arrayList.clear();
+        totalCO2 = 0.0;
+        totalCalories = 0.0;
         db.collection("Co2-Report")
                 .whereEqualTo("Date", Date)
                 .whereEqualTo("UserID", getShaedPref(this, Constant.spUserId))
@@ -133,14 +145,32 @@ public class StatisticsActivity extends AppCompatActivity {
                                 arrayList.addAll(document.getDocuments());
                                 statisticdapter.notifyDataSetChanged();
                                 findViewById(R.id.txtNoData).setVisibility(View.GONE);
+                                crdCount.setVisibility(View.VISIBLE);
                             } else {
                                 findViewById(R.id.txtNoData).setVisibility(View.VISIBLE);
+                                crdCount.setVisibility(View.GONE);
                             }
+                            for (int i = 0; i < arrayList.size(); i++) {
+
+                                Log.d(TAG, "getStatisticsList: " + Double.parseDouble(arrayList.get(i).getString("Co2")));
+
+                                if (arrayList.get(i).getBoolean("Co2Type")) {
+                                    totalCO2 = totalCO2 + Double.parseDouble(arrayList.get(i).getString("Co2"));
+                                } else {
+                                    totalCalories = totalCalories + Double.parseDouble(arrayList.get(i).getString("Co2"));
+                                }
+
+                            }
+
+                            txtCO2.setText(String.valueOf(totalCO2));
+                            txtCalories.setText(String.valueOf(totalCalories));
                         } else {
                             if (arrayList.size() > 0) {
                                 findViewById(R.id.txtNoData).setVisibility(View.GONE);
+                                crdCount.setVisibility(View.VISIBLE);
                             } else {
                                 findViewById(R.id.txtNoData).setVisibility(View.VISIBLE);
+                                crdCount.setVisibility(View.GONE);
                             }
                             statisticdapter.notifyDataSetChanged();
                         }

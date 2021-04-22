@@ -41,7 +41,6 @@ import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.PagerAdapter;
 
 import com.custom.co2.R;
 import com.custom.co2.utils.AnimationUtils;
@@ -55,11 +54,8 @@ import com.custom.co2.utils.DirectionUtils;
 import com.custom.co2.utils.DirectionsJSONParser;
 import com.custom.co2.utils.MapUtils;
 import com.custom.co2.utils.MyItem;
-import com.custom.co2.utils.OnselectVehicleType;
-import com.custom.co2.utils.ParallaxPageTransformer;
 import com.custom.co2.utils.Place;
 import com.custom.co2.utils.Placelistener;
-import com.custom.co2.utils.UltraPagerAdapter;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -127,8 +123,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     float screenRatio = 3.3f;
     List<LatLng> polyLineList;
     List<String> instruct;
-    HashMap<String, String> timeDure;
-    List<HashMap<String, String>> timeDureList = new ArrayList<>();
     LinearLayout linMode;
     String trpSource = "";
     String trpDestination = "";
@@ -254,12 +248,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     };
     private Location mLastLoc;
-    private OnselectVehicleType onselectVehicleType = new OnselectVehicleType() {
-        @Override
-        public void onClick(String vehicle_type) {
 
-        }
-    };
     private ClusterManager<MyItem> mClusterManager;
     private Marker originMarker;
     private Marker destinationMarker;
@@ -289,7 +278,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout1);
         NavigationView navigationView = findViewById(R.id.nav_view1);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -491,32 +479,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         btn_proceed.setVisibility(View.VISIBLE);
 
+        btn_proceed.setOnClickListener(view -> {
 
-        PagerAdapter adapter = new UltraPagerAdapter(false, mRecyclerView, onselectVehicleType);
+            if (btn_proceed.getText().toString().equals("Start")) {
 
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setInfiniteLoop(false);
-        mRecyclerView.setPageTransformer(false, new ParallaxPageTransformer(this));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-        btn_proceed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                        showMovingCab(polyLineList);
+                    }
+                }, 100);
+                linMode.setVisibility(View.GONE);
+                btn_proceed.setText("Stop");
+            } else {
 
-                if (btn_proceed.getText().toString().equals("Start")) {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            showMovingCab(polyLineList);
-                        }
-                    }, 100);
-                    linMode.setVisibility(View.GONE);
-                    btn_proceed.setText("Stop");
-                } else {
-
-                    TripDialog();
-                }
+                TripDialog();
             }
         });
 
@@ -1122,6 +1100,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         animateCamera(latLng);
     }
 
+    private void NoRouteDialog() {
+
+        final Dialog dialog = new Dialog(HomeActivity.this);
+        dialog.setContentView(R.layout.dialog_no_route);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.setCancelable(false);
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (displaymetrics.widthPixels * 0.90);
+        dialog.getWindow().setAttributes(lp);
+        TextView btnSubmit = dialog.findViewById(R.id.btn_submit);
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+            }
+        });
+        dialog.show();
+    }
+
     private void TripDialog() {
         Boolean isCo2 = false;
 
@@ -1384,9 +1386,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                DirectionsJSONParser parser = new DirectionsJSONParser();
-                Log.e("JsonObject", jObject.toString());
-                routes = parser.parse(jObject);
+                if (!jObject.getString("status").equals("ZERO_RESULTS")) {
+                    DirectionsJSONParser parser = new DirectionsJSONParser();
+                    Log.e("JsonObject", jObject.toString());
+                    routes = parser.parse(jObject);
+                } else {
+
+                    new Thread() {
+                        public void run() {
+                            HomeActivity.this.runOnUiThread(new Runnable() {
+                                public void run() {
+                                    NoRouteDialog();
+                                }
+                            });
+                        }
+                    }.start();
+
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
