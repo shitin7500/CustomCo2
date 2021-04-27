@@ -2,7 +2,9 @@ package com.custom.co2.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -65,7 +67,10 @@ public class RegisterActivity extends AppCompatActivity {
             finish();
         });
         btnLogin.setOnClickListener(view -> {
-
+            if(!isNetworkConnected()){
+                Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (Valid()) {
                 checkEmail(edEmail.getText().toString());
             }
@@ -240,6 +245,11 @@ public class RegisterActivity extends AppCompatActivity {
                 });
 
 
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 }

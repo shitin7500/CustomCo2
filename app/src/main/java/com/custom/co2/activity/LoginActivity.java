@@ -3,6 +3,7 @@
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnLogin.setOnClickListener(view -> {
+            if(!isNetworkConnected()){
+                Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (Valid()) {
                 checkUser(edEmail.getText().toString().trim(), edPassword.getText().toString().trim());
             }
@@ -104,6 +109,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         btnForgotPassword.setOnClickListener(view -> {
+            if(!isNetworkConnected()){
+                Toast.makeText(this, "Internet is not connected", Toast.LENGTH_SHORT).show();
+                return;
+            }
             if (edForgotEmail.getText().toString().isEmpty()) {
                 edForgotEmail.setError("Enter email");
                 edForgotEmail.requestFocus();
@@ -222,6 +231,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
 }
