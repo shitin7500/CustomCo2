@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_24dp"
         android:gravity="center"
-        android:text="No Any Route Available"
+        android:text="Trouble finding a route, please try another location. "
         android:textSize="18sp" />
 
 
@@ -33,7 +33,7 @@
         android:layout_margin="@dimen/margin_24dp"
         android:background="@drawable/bg_btn"
         android:gravity="center"
-        android:text="Retry"
+        android:text="Okay"
         android:textColor="@color/white"
         android:textSize="18sp" />
 

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
-        android:text="Trip Complated"
+        android:text="Trip Completed"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -103,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDestence" />
 
     <Spinner
-        android:id="@+id/spFuleType"
+        android:id="@+id/spFuelType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
@@ -120,11 +120,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
 
-        android:text="Total Co2"
+        android:text="Total Co2 (kg)"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spFuleType" />
+        app:layout_constraintTop_toBottomOf="@+id/spFuelType" />
 
     <TextView
         android:id="@+id/txtCO2"
@@ -156,7 +156,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_8dp"
-        android:text="Disclaimer (For everyone) - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year."
+        android:text="Disclaimer - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year."
         android:textColor="@color/colorRed"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"

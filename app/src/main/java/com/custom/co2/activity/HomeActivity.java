@@ -873,18 +873,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromBitmap(iconFactory_left.makeIcon("current"))));
 
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (marker.equals(carMarker2)) {// if marker source is clicked
-                    destCard.setVisibility(View.VISIBLE);
-                    dest.setEnabled(true);
-                    sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-                    MapUtils.createTopDownAnimation(HomeActivity.this, destCard, null);
-                }
-                return false;
-            }
-        });
+//        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                if (marker.equals(carMarker2)) {// if marker source is clicked
+//                    destCard.setVisibility(View.VISIBLE);
+//                    dest.setEnabled(true);
+//                    sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+//                    MapUtils.createTopDownAnimation(HomeActivity.this, destCard, null);
+//                }
+//                return false;
+//            }
+//        });
 
         IconGenerator iconFactory_lef2 = new IconGenerator(this);
         iconFactory_lef2.setBackground(null);
@@ -1143,8 +1143,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         TextView txtCo2 = dialog.findViewById(R.id.txtCO2);
         TextView txtCo2Title = dialog.findViewById(R.id.txtCO2Title);
         TextView txtdec1 = dialog.findViewById(R.id.txtdec1);
+        TextView txtdec2 = dialog.findViewById(R.id.txtdec2);
 
-        Spinner spFuleType = dialog.findViewById(R.id.spFuleType);
+        Spinner spFuleType = dialog.findViewById(R.id.spFuelType);
         Spinner spVehicleType = dialog.findViewById(R.id.spVehicleType);
 
         if (markerFlag.equals("CAR")) {
@@ -1177,6 +1178,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             isCo2 = false;
             spFuleType.setVisibility(View.GONE);
             spVehicleType.setVisibility(View.GONE);
+            txtdec2.setVisibility(View.GONE);
             txtCo2Title.setText("Total Calories");
             double basiccalories;
             double co2value;
@@ -1205,7 +1207,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     txtdec1.setVisibility(View.GONE);
                 }
                 FuleSelectedPos = position;
-                txtCo2.setText(String.format("%.2f", calculateCO2(RideDistance)));
+                txtCo2.setText(String.format("%.2f",
+                        calculateCO2(RideDistance)));
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
