@@ -924,7 +924,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         desMarker3.setVisible(false);
 
         double tempDistance = 0.0;
-        tempDistance = Double.parseDouble(RideDistance.replace(" km", "").replace(" m", ""));
+        tempDistance = Double.parseDouble(RideDistance.replace(" km", "").replace(" m", "").replace(",",""));
 
         if (tempDistance > 500) {
             btn_Flight.setVisibility(View.VISIBLE);
@@ -1132,9 +1132,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
             if (RideDistance.contains(" km")) {
-                co2value = BasicCo2 * Double.parseDouble(RideDistance.replace(" km", ""));
+                co2value = BasicCo2 * Double.parseDouble(RideDistance.replace(" km", "").replace(",",""));
             } else {
-                co2value = BasicCo2 * (Double.parseDouble(RideDistance.replace(" m", "")) / 1000);
+                co2value = BasicCo2 * (Double.parseDouble(RideDistance.replace(" m", "").replace(",","")) / 1000);
             }
             txtCo2.setText(String.format("%.2f", co2value));
         } else {
