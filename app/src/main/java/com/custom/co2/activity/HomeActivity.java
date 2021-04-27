@@ -132,7 +132,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     Button dest;
     SlidingUpPanelLayout sliding_layout;
     Button fetch, btn_proceed;
-    double totleKM = 0.0;
+    double totalKM = 0.0;
     String originLatlong = "";
     String destinationLatlong = "";
     String originAddress = "";
@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     Place placeGet;
 
     int FuleSelectedPos = 0;
-    int VehicleelectedPos = 0;
+    int VehicleSelectedPos = 0;
 
     Animation.AnimationListener uptop = new Animation.AnimationListener() {
         @Override
@@ -884,7 +884,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             RideDistance = util.getDuration();
             trpDestance = util.getDistance();
             String[] separated = util.getDistance().replace(",", "").split(" ");
-            totleKM = Double.parseDouble(separated[0]);
+            totalKM = Double.parseDouble(separated[0]);
             originLatlong = placeGet.getSrcLat() + "," + placeGet.getSrcLon();
             destinationLatlong = placeGet.getDestLat() + "," + placeGet.getDestLon();
             Log.e("ddddddd", originLatlong + ":" + destinationLatlong);
@@ -1108,16 +1108,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         TextView txtdec1 = dialog.findViewById(R.id.txtdec1);
         TextView txtdec2 = dialog.findViewById(R.id.txtdec2);
 
-        Spinner spFuleType = dialog.findViewById(R.id.spFuelType);
+        Spinner spFuelType = dialog.findViewById(R.id.spFuelType);
         Spinner spVehicleType = dialog.findViewById(R.id.spVehicleType);
 
         if (markerFlag.equals("CAR")) {
             isCo2 = true;
-            spFuleType.setVisibility(View.VISIBLE);
+            spFuelType.setVisibility(View.VISIBLE);
             spVehicleType.setVisibility(View.VISIBLE);
         } else if (markerFlag.equals("BUS") || markerFlag.equals("TRAIN") || markerFlag.equals("FLIGHT")) {
             isCo2 = true;
-            spFuleType.setVisibility(View.GONE);
+            spFuelType.setVisibility(View.GONE);
             spVehicleType.setVisibility(View.GONE);
             double BasicCo2 = 0.0;
             double co2value;
@@ -1139,7 +1139,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             txtCo2.setText(String.format("%.2f", co2value));
         } else {
             isCo2 = false;
-            spFuleType.setVisibility(View.GONE);
+            spFuelType.setVisibility(View.GONE);
             spVehicleType.setVisibility(View.GONE);
             txtdec2.setVisibility(View.GONE);
             txtCo2Title.setText("Total Calories");
@@ -1162,7 +1162,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         txtSource.setText(trpSource);
         txtDestination.setText(trpDestination);
         txtDistance.setText(RideDistance);
-        spFuleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spFuelType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 3 || position == 4) {
                     txtdec1.setVisibility(View.VISIBLE);
@@ -1180,7 +1180,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         spVehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                VehicleelectedPos = position;
+                VehicleSelectedPos = position;
                 txtCo2.setText(String.format("%.2f", calculateCO2(RideDistance)));
             }
 
@@ -1199,7 +1199,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     txtCo2.getText().toString(),
                     dialog,
                     finalIsCo,
-                    spFuleType.getSelectedItem().toString(),
+                    spFuelType.getSelectedItem().toString(),
                     spVehicleType.getSelectedItem().toString(), markerFlag
 
             );
@@ -1216,35 +1216,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         double basicValue = 0;
         double co2value = 0;
-        if (FuleSelectedPos == 0 && VehicleelectedPos == 0) {
+        if (FuleSelectedPos == 0 && VehicleSelectedPos == 0) {
             basicValue = 0.28;
-        } else if (FuleSelectedPos == 0 && VehicleelectedPos == 1) {
+        } else if (FuleSelectedPos == 0 && VehicleSelectedPos == 1) {
             basicValue = 0.34;
-        } else if (FuleSelectedPos == 0 && VehicleelectedPos == 2) {
+        } else if (FuleSelectedPos == 0 && VehicleSelectedPos == 2) {
             basicValue = 0.41;
-        } else if (FuleSelectedPos == 1 && VehicleelectedPos == 0) {
+        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 0) {
             basicValue = 0.24;
-        } else if (FuleSelectedPos == 1 && VehicleelectedPos == 1) {
+        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 1) {
             basicValue = 0.31;
-        } else if (FuleSelectedPos == 1 && VehicleelectedPos == 2) {
+        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 2) {
             basicValue = 0.39;
-        } else if (FuleSelectedPos == 2 && VehicleelectedPos == 0) {
+        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 0) {
             basicValue = 0.21;
-        } else if (FuleSelectedPos == 2 && VehicleelectedPos == 1) {
+        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 1) {
             basicValue = 0.26;
-        } else if (FuleSelectedPos == 2 && VehicleelectedPos == 2) {
+        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 2) {
             basicValue = 0.30;
-        } else if (FuleSelectedPos == 3 && VehicleelectedPos == 0) {
+        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 0) {
             basicValue = 0.19;
-        } else if (FuleSelectedPos == 3 && VehicleelectedPos == 1) {
+        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 1) {
             basicValue = 0.24;
-        } else if (FuleSelectedPos == 3 && VehicleelectedPos == 2) {
+        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 2) {
             basicValue = 0.28;
-        } else if (FuleSelectedPos == 4 && VehicleelectedPos == 0) {
+        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 0) {
             basicValue = 0.07;
-        } else if (FuleSelectedPos == 4 && VehicleelectedPos == 1) {
+        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 1) {
             basicValue = 0.08;
-        } else if (FuleSelectedPos == 4 && VehicleelectedPos == 2) {
+        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 2) {
             basicValue = 0.10;
         }
 

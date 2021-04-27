@@ -3,7 +3,6 @@ package com.custom.co2.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -27,7 +26,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,7 +46,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -65,14 +62,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
-
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -80,7 +72,7 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         PlaceAutocompleteAdapter.PlaceAutoCompleteInterface, OnMapReadyCallback, LocationListener, ProgressListener {
     private RecyclerView mRecyclerView;
     PlaceAutocompleteAdapter mAdapter;
-    private static final LatLngBounds BOUNDS_INDIA = new LatLngBounds(
+    private static final LatLngBounds BOUNDS_UK = new LatLngBounds(
             new LatLng(6.4626999, 68.1097),
             new LatLng(35.513327, 97.39535869999999));
     EditText mSearchEdittext;
@@ -201,7 +193,7 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         final AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
                 .setCountry("IN")
                 .build();
-        mAdapter = new PlaceAutocompleteAdapter(this, mClient, BOUNDS_INDIA, typeFilter);
+        mAdapter = new PlaceAutocompleteAdapter(this, mClient, BOUNDS_UK, typeFilter);
         mAdapter.setProgress(iv_line);
         MapUtils.slideUp(this, mRecyclerView, new Animation.AnimationListener() {
             @Override

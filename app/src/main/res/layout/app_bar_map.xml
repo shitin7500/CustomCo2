@@ -230,7 +230,7 @@
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_flait" />
+            app:srcCompat="@drawable/ic_Flight" />
 
 
         <ImageView

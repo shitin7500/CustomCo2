@@ -22,8 +22,8 @@
     <string name="login">Login</string>
     <string name="e_mail">E-mail</string>
     <string name="password">Password</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="set_pick_up">Set Pick Up</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="set_pick_up">Set Pick Up Location</string>
     <string name="done">Done</string>
     <string name="already_have_an_account">Already have an account ?</string>
     <string name="username">Username</string>
@@ -31,11 +31,11 @@
     <string name="date_of_birth">Date of birth</string>
     <string name="current_location">Current Location</string>
     <string name="where_to">Where to?</string>
-    <string name="statistic">Statistic</string>
-    <string name="total_co2">Total CO2</string>
+    <string name="statistic">Statistics</string>
+    <string name="total_co2">Total CO2(Kg) </string>
     <string name="_0">0</string>
-    <string name="total_calories">Total Calories</string>
-    <string name="no_data_available">No Data Available</string>
+    <string name="total_calories">Total Calories(kCal)</string>
+    <string name="no_data_available">No trip history available </string>
     <string name="update_profile">Update Profile</string>
     <string name="start">Start</string>
     <string name="request_ride">Request Ride</string>
@@ -51,12 +51,12 @@
     <string name="destination">Destination</string>
     <string name="distance">Distance</string>
     <string name="_5_km">5 KM</string>
-    <string name="total_co2_kg">Total Co2 (kg)</string>
+    <string name="total_co2_kg">Total Co2(Kg)</string>
     <string name="disclaimer_for_electric_phev_cars_the_following_results_are_based_on_the_assumption_that_the_energy_mix_to_charge_the_vehicle_is_certified_green_electricity">Disclaimer for electric/phev cars - The following results are based on the assumption that the energy mix to charge the vehicle is CERTIFIED GREEN ELECTRICITY.</string>
     <string name="disclaimer_the_following_results_are_an_approximation_and_may_not_represent_the_actual_co2_emissions_as_it_may_vary_from_model_to_model_and_manufacture_year">Disclaimer - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year.</string>
     <string name="source">Source</string>
     <string name="ride_type">Ride Type</string>
-    <string name="co2_kg">CO2 (kg)</string>
+    <string name="co2_kg">CO2(kg)</string>
     <string name="set_location_on_map">Set Location on Map</string>
 
     <array name="vehicleType">
