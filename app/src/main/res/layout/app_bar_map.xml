@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription,Autofill,LabelFor">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/destCard"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="15dp"
+        android:transitionName="dest"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="10dp"
+        app:cardPreventCornerOverlap="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/destball" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/destBtn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="start|center"
+                android:text="@string/where_to"
+                android:textAllCaps="false"
+                android:textColor="#898888"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <!-- MAIN CONTENT -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:visibility="gone">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                tools:context=".activity.MapsActivity" />
+
+            <Button
+                android:id="@+id/btn_proceed"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginBottom="@dimen/margin_24dp"
+                android:background="@drawable/bg_btn"
+                android:paddingLeft="@dimen/margin_60dp"
+                android:paddingRight="@dimen/margin_60dp"
+                android:text="@string/start"
+                android:textColor="@color/white"
+                android:textSize="@dimen/margin_14sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- SLIDING LAYOUT -->
+        <FrameLayout
+            android:id="@+id/sliderLin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.tmall.ultraviewpager.UltraViewPager
+                    android:id="@+id/recycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_marginBottom="@dimen/margin_8dp"
+                    android:background="@android:color/white"
+                    android:visibility="gone" />
+
+
+                <Button
+                    android:id="@+id/fetch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bg_btn"
+                    android:gravity="center"
+                    android:paddingStart="60dp"
+                    android:paddingEnd="60dp"
+                    android:text="@string/request_ride"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:id="@+id/img"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:transitionName="img" />
+
+                <TextView
+                    android:id="@+id/txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </FrameLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+    <LinearLayout
+        android:id="@+id/lin_mode"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="@dimen/margin_8dp"
+        android:layout_marginTop="64dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/btn_bus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:layout_marginHorizontal="2dp"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_bus" />
+
+        <ImageView
+            android:id="@+id/btn_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_car" />
+
+
+        <ImageView
+            android:id="@+id/btn_train"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_train" />
+
+        <ImageView
+            android:id="@+id/btn_flight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_Flight" />
+
+
+        <ImageView
+            android:id="@+id/btn_cycle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_green_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_bicycle" />
+
+        <ImageView
+            android:id="@+id/btn_Walking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_green_bg_selection"
+            android:gravity="center"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_walk" />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.CustomCo2.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.CustomCo2.PopupOverlay">
+
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:paddingRight="74dp"
+                    android:text="@string/proenv_y"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/margin_16dp" />
+
+            </RelativeLayout>
+
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</FrameLayout>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "803694163387",
+    "project_id": "customco2",
+    "storage_bucket": "customco2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803694163387:android:e5ce1a39e755905954809e",
+        "android_client_info": {
+          "package_name": "com.custom.co2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803694163387-4dtdm7dr7q4cj3r16ipeqnpe5ouglgkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.custom.co2",
+            "certificate_hash": "958b4d304cabc71db80c052914b4f1510fe1c0e8"
+          }
+        },
+        {
+          "client_id": "803694163387-v0f7ot82e65oacghrhd4bueliplqtlms.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClEy7iOrtMOyD7_hLoALTz6o_1vur7mYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803694163387-v0f7ot82e65oacghrhd4bueliplqtlms.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
