@@ -40,6 +40,9 @@ public class RegisterActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     Dialog progressDialog;
 
+    /**
+     * Method for initailize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,9 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog = showProgressDialog(RegisterActivity.this);
     }
 
+    /**
+     * Method for manage clicks
+     */
     private void clicks() {
         btnGotoSignUp.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -80,6 +86,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method for validations
+     */
     private boolean Valid() {
         if (edUsername.getText().toString().isEmpty()) {
             edUsername.setError("Enter username");
@@ -116,7 +125,14 @@ public class RegisterActivity extends AppCompatActivity {
             edPassword.requestFocus();
             return false;
 
-        } else if (!edConfirmPassword.getText().toString().equals(edPassword.getText().toString())) {
+        }
+        else if (edPassword.getText().toString().length() < 6) {
+            edPassword.setError("Password length should be more then 5 letter");
+            edPassword.requestFocus();
+            return false;
+
+        }
+        else if (!edConfirmPassword.getText().toString().equals(edPassword.getText().toString())) {
             edConfirmPassword.setError("Password don't match");
             edConfirmPassword.requestFocus();
             return false;
@@ -127,6 +143,9 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for initialize view and variables
+     */
     private void inits() {
         btnGotoSignUp = findViewById(R.id.tv_goto_login);
         btnLogin = findViewById(R.id.tv_btn_login);
@@ -139,20 +158,19 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            // TODO Auto-generated method stub
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            updateLabel();
-        }
-
-
+    /**
+     * Method for get date picker callback when date selected
+     */
+    DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel();
     };
 
+    /**
+     * Method for update date lable
+     */
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -161,6 +179,9 @@ public class RegisterActivity extends AppCompatActivity {
         edDob.setError(null);
     }
 
+    /**
+     * Method for register data to firebase
+     */
     private void registerDataToCloud(String username, String email, String password, String dob, String contact) {
         Map<String, Object> user = new HashMap<>();
         user.put("Username", username);
@@ -183,6 +204,9 @@ public class RegisterActivity extends AppCompatActivity {
            });
     }
 
+    /**
+     * Method for check email existing
+     */
     private void checkEmail(String email) {
         progressDialog.show();
 

@@ -28,6 +28,8 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
+import org.jetbrains.annotations.NotNull;
+
 import static com.custom.co2.utils.Constant.getShaedPref;
 import static com.custom.co2.utils.Constant.spEmail;
 
@@ -35,17 +37,17 @@ public class SplashActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     GoogleApiClient mGoogleApiClient;
+
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_splash);
-
         locationPermissions();
-
-
-
     }
 
     private void locationPermissions() {
@@ -55,28 +57,24 @@ public class SplashActivity extends AppCompatActivity implements
             return;
         } else {
             turnGPSOn();
-            // Write you code here if permission already given.
         }
     }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
 
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    turnGPSOn();
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
+    /**
+     * Method for check permission request
+     */
+    public void onRequestPermissionsResult(int requestCode, @NotNull String permissions[], @NotNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                turnGPSOn();
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
+    /**
+     * Method for eneble gps
+     */
     private void turnGPSOn() {
 
         if (mGoogleApiClient == null) {
@@ -118,20 +116,19 @@ public class SplashActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Method for redirect to login or home
+     */
     private void SplashIntent() {
         new Handler().postDelayed(new Runnable() {
-
             @Override
-
             public void run() {
-
                 if (getShaedPref(SplashActivity.this, spEmail).equals("")) {
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     finish();
                 } else {
                     startActivity(new Intent(getApplicationContext(), HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 }
-
             }
 
         }, 2500);
@@ -141,13 +138,10 @@ public class SplashActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-
             case 1000:
                 if (resultCode == Activity.RESULT_OK) {
-                    String result = data.getStringExtra("result");
                     SplashIntent();
                 } else if (resultCode == Activity.RESULT_CANCELED) {
-                    //Write your code if there's no result
                 }
 
                 break;

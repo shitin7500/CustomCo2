@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.RegisterActivity">
+    tools:context=".activity.RegisterActivity"
+    tools:ignore="ContentDescription,Autofill,LabelFor" >
 
     <ImageView
         android:layout_width="match_parent"
@@ -31,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Already have an account ?"
+        android:text="@string/already_have_an_account"
         android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/tv_goto_login" />
@@ -43,7 +44,7 @@
         android:gravity="center_horizontal"
         android:paddingHorizontal="4dp"
         android:paddingVertical="4dp"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,7 +69,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingHorizontal="18dp"
@@ -78,9 +79,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Register"
+                    android:text="@string/register"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="24dp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -88,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
                     android:background="@color/white"
-                    android:hint="Username">
+                    android:hint="@string/username">
 
                     <EditText
                         android:id="@+id/ed_username"
@@ -96,7 +97,8 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white"
                         android:inputType="text"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        tools:ignore="Autofill,LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -104,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Contact number">
+                    android:hint="@string/contact_number">
 
                     <EditText
                         android:id="@+id/ed_contact"
@@ -121,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Date of birth">
+                    android:hint="@string/date_of_birth">
 
                     <EditText
                         android:id="@+id/ed_dob"
@@ -137,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="E-mail">
+                    android:hint="@string/e_mail">
 
 
                     <EditText
@@ -153,7 +155,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Password">
+                    android:hint="@string/password">
 
                     <EditText
                         android:id="@+id/ed_password"
@@ -168,7 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Confirm Password">
+                    android:hint="@string/confirm_password">
 
                     <EditText
                         android:id="@+id/ed_confirm_password"
@@ -188,7 +190,7 @@
                     android:layout_marginTop="24dp"
                     android:background="@drawable/bg_btn"
                     android:gravity="center"
-                    android:text="Register"
+                    android:text="@string/register"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 

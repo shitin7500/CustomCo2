@@ -18,7 +18,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +26,15 @@ import static com.custom.co2.utils.Constant.showProgressDialog;
 import static com.custom.co2.utils.Constant.spEmail;
 
 public class changepasswordactivity extends AppCompatActivity {
-    final Calendar myCalendar = Calendar.getInstance();
     FirebaseFirestore db;
     String TAG = "RegisterActivity";
     TextView btnLogin;
     EditText edt_old_password, edt_new_password, edt_confirm_password;
     Dialog progressDialog;
 
+    /**
+    * OnCreate method for initialize method
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,9 @@ public class changepasswordactivity extends AppCompatActivity {
         progressDialog = showProgressDialog(changepasswordactivity.this);
     }
 
+    /**
+     * Method for hancle clicks
+     */
     private void clicks() {
 
         btnLogin.setOnClickListener(view -> {
@@ -58,6 +62,9 @@ public class changepasswordactivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for check validations
+     */
     private boolean Valid() {
         if (edt_old_password.getText().toString().isEmpty()) {
             edt_old_password.setError("Enter Old Password");
@@ -78,6 +85,9 @@ public class changepasswordactivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for initialize views
+     */
     private void inits() {
         btnLogin = findViewById(R.id.tv_btn_login);
         edt_old_password = findViewById(R.id.edt_old_password);
@@ -85,6 +95,9 @@ public class changepasswordactivity extends AppCompatActivity {
         edt_confirm_password = findViewById(R.id.edt_confirm_password);
     }
 
+    /**
+     * Method for update data on firestore
+     */
     private void registerDataToCloud(String password) {
         progressDialog.show();
         Map<String, Object> user = new HashMap<>();
@@ -101,7 +114,9 @@ public class changepasswordactivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Method for check email is existing
+     */
     private void checkPassword(String password) {
         progressDialog.show();
 

@@ -1,6 +1,5 @@
 package com.custom.co2.utils;
 
-
 import android.text.Html;
 import android.util.Log;
 
@@ -14,12 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class DirectionsJSONParser {
 
-    /**
-     * Receives a JSONObject and returns a list of lists containing latitude and longitude
-     */
     String distance = "1.2";
     String duration = "1.3";
     String stAddress = "aaaa";
@@ -94,11 +89,6 @@ public class DirectionsJSONParser {
         return routes;
     }
 
-
-    /**
-     * Method to decode polyline points
-     * Courtesy : http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
-     */
     private List<LatLng> decodePoly(String encoded) {
 
         List<LatLng> poly = new ArrayList<LatLng>();

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activity.SearchActivity"
     android:background="@android:color/transparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="ContentDescription,Autofill,LabelFor">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/destCard"
@@ -114,7 +115,7 @@
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
                         android:singleLine="true"
-                        android:text="Current Location"
+                        android:text="@string/current_location"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -127,7 +128,7 @@
                         android:background="@color/colorPrimary"
                         android:ellipsize="end"
                         android:gravity="start|center"
-                        android:hint="Where to?"
+                        android:hint="@string/where_to"
                         android:imeOptions="actionDone"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
@@ -181,8 +182,7 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <fragment
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
@@ -208,7 +208,7 @@
             android:layout_marginBottom="25dp"
             android:paddingStart="80dp"
             android:paddingEnd="80dp"
-            android:text="Done"
+            android:text="@string/done"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="15sp"

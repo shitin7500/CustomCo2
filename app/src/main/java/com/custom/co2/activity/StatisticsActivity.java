@@ -34,7 +34,7 @@ import static com.custom.co2.utils.Constant.showProgressDialog;
 
 public class StatisticsActivity extends AppCompatActivity {
     FirebaseFirestore db;
-    String TAG = "RegisterActivity";
+    String TAG = "StatisticsActivity";
     Statisticdapter statisticdapter;
     ImageView btnBack, filter;
     ConstraintLayout crdCount;
@@ -45,6 +45,9 @@ public class StatisticsActivity extends AppCompatActivity {
 
     double totalCO2 = 0.0, totalCalories = 0.0;
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,9 @@ public class StatisticsActivity extends AppCompatActivity {
         getStatisticsList(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
     }
 
-
+    /**
+     * Method for init variable and widgets
+     */
     private void inits() {
 
         recStatistic = findViewById(R.id.recStatistic);
@@ -88,7 +93,9 @@ public class StatisticsActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Method for show date filter dialog
+     */
     private void showDateFilter() {
 
 
@@ -105,7 +112,6 @@ public class StatisticsActivity extends AppCompatActivity {
         TextView txtDate = dialog.findViewById(R.id.txtDate);
 
         txtDate.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date()));
-
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         TextView btn_submit = dialog.findViewById(R.id.btn_submit);
@@ -126,6 +132,9 @@ public class StatisticsActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * Method for fetch statistic data from firebase
+     */
     private void getStatisticsList(String Date) {
         progressDialog.show();
         arrayList.clear();

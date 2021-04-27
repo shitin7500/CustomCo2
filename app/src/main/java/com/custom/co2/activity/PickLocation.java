@@ -84,12 +84,9 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
             new LatLng(6.4626999, 68.1097),
             new LatLng(35.513327, 97.39535869999999));
     EditText mSearchEdittext;
-    private Location mLastLoc;
     LocationRequest mLocationRequest;
     private static final long INTERVAL = 1000 * 5; //1 minute
     private static final long FASTEST_INTERVAL = 1000 * 3;
-    //    ImageView mClear;
-    private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
     private GoogleMap googleMap;
     LatLng loc;
@@ -99,10 +96,12 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
     Button done;
     ImageView iv_line;
     LinearLayout linSetLocation;
-    String strAddressType = "";
 
     private AnimatedVectorDrawableCompat avd;
 
+    /**
+     * Method for start text field animation
+     */
     private void startAnimation(boolean isStart) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isStart) {
@@ -117,7 +116,6 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
                         iv_line.invalidate();
                     }
                 }, 800);
-//
             }
         }
     }
@@ -125,10 +123,12 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
     private Runnable action = () -> repeatAnimation();
     Handler handler = new Handler();
 
+    /**
+     * Method for repeat text field animation
+     */
     private void repeatAnimation() {
         if (avd != null) {
             new Thread(() -> {
-                //your code
                 handler.post(() -> {
                     iv_line.setVisibility(View.VISIBLE);
                     avd.start();
@@ -140,11 +140,17 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    /**
+     * Method for destroy activity
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,8 +199,6 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         iv_line.setBackground(avd);
         iv_line.setVisibility(View.GONE);
         final AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-//                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .setCountry("IN")
                 .build();
         mAdapter = new PlaceAutocompleteAdapter(this, mClient, BOUNDS_INDIA, typeFilter);
@@ -287,9 +291,6 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
                 }
                 if (!s.toString().equals("") && mClient.isConnected()) {
                     mAdapter.getFilter().filter(s.toString());
-                } else if (!mClient.isConnected()) {
-//                    Toast.makeText(getApplicationContext(), Constants.API_NOT_CONNECTED, Toast.LENGTH_SHORT).show();
-                    Log.e("connection", "NOT CONNECTED");
                 }
             }
 
@@ -331,9 +332,9 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
 
     }
 
-
-
-
+    /**
+     * Method for hand back press
+     */
     private void onBack() {
         MapUtils.SlideToAbove(mRecyclerView, new Animation.AnimationListener() {
             @Override
@@ -373,6 +374,9 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         });
     }
 
+    /**
+     * Method for create location request
+     */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
@@ -388,23 +392,35 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    /**
+     * Method for do stuffs while activity starts
+     */
     @Override
     protected void onStart() {
         super.onStart();
         mClient.connect();
     }
 
+    /**
+     * Method for manage activity while in background for long time
+     */
     @Override
     protected void onStop() {
         mClient.disconnect();
         super.onStop();
     }
 
+    /**
+     * Method for get callback when connection failed
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
+    /**
+     * Method for get place data when click on location in auto complete list
+     */
     @Override
     public void onPlaceClick(ArrayList<PlaceAutocompleteAdapter.PlaceAutocomplete> mResultList, int position) {
         onProgressChanged(false);
@@ -414,21 +430,16 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
                 PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                         .getPlaceById(mClient, placeId);
 
-                LatLng latlong = getLocationFromAddress(this, String.valueOf(mResultList.get(position).description));
-
                 placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
                     public void onResult(@NonNull PlaceBuffer places) {
-                        //if(places.getCount()==1){
                         Place place = new Place(getLocationFromAddress(PickLocation.this, String.valueOf(mResultList.get(position).description)), new LatLng(0, 0));
                         mSearchEdittext.setText(String.valueOf(mResultList.get(position).description));
                         srcAdd = String.valueOf(String.valueOf(mResultList.get(position).description));
                         place.setSrcAddress(String.valueOf(mResultList.get(position).description));
                         CustomPickUp.getInstance().changeState(place);
                         onBack();
-                       /* }else {
-                            Toast.makeText(getApplicationContext(),"something went wrong",Toast.LENGTH_SHORT).show();
-                        }*/
+
                     }
                 });
             } catch (Exception e) {
@@ -464,34 +475,32 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
-
+    /**
+     * Method for et lat ng from address
+     */
     public LatLng getLocationFromAddress(Context context, String strAddress) {
-
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
-
         try {
-            // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
                 return null;
             }
-
             Address location = address.get(0);
             p1 = new LatLng(location.getLatitude(), location.getLongitude());
-
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
-
         return p1;
     }
 
 
     String srcAdd = "";
 
+    /**
+     * Method for get callback when map is ready
+     */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -551,9 +560,11 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         });
     }
 
+    /**
+     * Method for get callback when location changed
+     */
     @Override
     public void onLocationChanged(Location location) {
-        mLastLoc = location;
         if (carMarker == null) {
             carMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).
                     flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.source)));
@@ -575,31 +586,12 @@ public class PickLocation extends AppCompatActivity implements GoogleApiClient.O
         }
     }
 
+    /**
+     * Method for get callback when progress changed
+     */
     @Override
     public void onProgressChanged(boolean state) {
         startAnimation(state);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            com.google.android.libraries.places.api.model.Place place = Autocomplete.getPlaceFromIntent(data);
-            //AddAddressToDatabase(place.getAddress(), strAddressType);
-
-
-            Log.i("+++++", "Place: " + place.getAddress());
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-            // TODO: Handle the error.
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Log.i("+++++", status.getStatusMessage());
-        } else if (resultCode == RESULT_CANCELED) {
-            // The user canceled the operation.
-        }
-
-
     }
 
 

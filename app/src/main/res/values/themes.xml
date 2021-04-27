@@ -16,13 +16,16 @@
 
     </style>
 
-
+    <!--No action bar theme-->
     <style name="Theme.CustomCo2.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--dark action bar theme-->
     <style name="Theme.CustomCo2.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    <!--light action bar theme-->
     <style name="Theme.CustomCo2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

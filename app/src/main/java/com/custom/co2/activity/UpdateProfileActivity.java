@@ -47,6 +47,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
     final Calendar myCalendar = Calendar.getInstance();
     Dialog progressDialog;
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,12 +63,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
         progressDialog = showProgressDialog(UpdateProfileActivity.this);
     }
 
+    /**
+     * Method for manage clicks
+     */
     private void clicks() {
 
         btnLogin.setOnClickListener(view -> {
 
             if (Valid()) {
-                registerDataToCloud(edUsername.getText().toString(), edEmail.getText().toString(),
+                updateDataToCloud(edUsername.getText().toString(), edEmail.getText().toString(),
                         edDob.getText().toString(), edContact.getText().toString());
             }
         });
@@ -85,6 +91,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method for validations
+     */
     private boolean Valid() {
         if (edUsername.getText().toString().isEmpty()) {
             edUsername.setError("Enter username");
@@ -120,6 +129,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for init variable and widgets
+     */
     private void inits() {
         btnLogin = findViewById(R.id.tv_btn_login);
         edUsername = findViewById(R.id.ed_username);
@@ -135,6 +147,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for date listener
+     */
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
         @Override
@@ -149,6 +164,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     };
 
+    /**
+     * Method for change date label
+     */
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -157,7 +175,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
         edDob.setError(null);
     }
 
-    private void registerDataToCloud(String username, String email, String dob, String contact) {
+    /**
+     * Method for update date to firebase
+     */
+    private void updateDataToCloud(String username, String email, String dob, String contact) {
         progressDialog.show();
         Map<String, Object> user = new HashMap<>();
         user.put("Username", username);

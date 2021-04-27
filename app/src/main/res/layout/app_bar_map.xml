@@ -4,24 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/ic_navigation"
-        android:visibility="gone"
-        app:backgroundTint="@android:color/holo_red_dark"
-        app:elevation="15dp"
-        app:fabSize="mini"
-        app:rippleColor="@android:color/holo_red_light"
-        app:useCompatPadding="false" />
-
+    android:orientation="vertical"
+    tools:ignore="ContentDescription,Autofill,LabelFor">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/destCard"
@@ -61,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:background="@android:color/transparent"
                 android:gravity="start|center"
-                android:text="Where to?"
+                android:text="@string/where_to"
                 android:textAllCaps="false"
                 android:textColor="#898888"
                 android:textSize="16sp" />
@@ -99,7 +83,7 @@
                 android:background="@drawable/bg_btn"
                 android:paddingLeft="@dimen/margin_60dp"
                 android:paddingRight="@dimen/margin_60dp"
-                android:text="Start"
+                android:text="@string/start"
                 android:textColor="@color/white"
                 android:textSize="@dimen/margin_14sp"
                 android:visibility="gone"
@@ -128,20 +112,6 @@
                     android:visibility="gone" />
 
 
-                <!--                <Button-->
-                <!--                    android:id="@+id/btn_proceed"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="45dp"-->
-                <!--                    android:layout_gravity="center_horizontal"-->
-                <!--                    android:layout_marginTop="@dimen/margin_16dp"-->
-                <!--                    android:layout_marginBottom="@dimen/margin_12dp"-->
-                <!--                    android:background="@drawable/bg_btn"-->
-                <!--                    android:paddingLeft="@dimen/margin_60dp"-->
-                <!--                    android:paddingRight="@dimen/margin_60dp"-->
-                <!--                    android:text="proceed"-->
-                <!--                    android:textColor="@color/white"-->
-                <!--                    android:textSize="@dimen/margin_14sp" />-->
-
                 <Button
                     android:id="@+id/fetch"
                     android:layout_width="wrap_content"
@@ -153,7 +123,7 @@
                     android:gravity="center"
                     android:paddingStart="60dp"
                     android:paddingEnd="60dp"
-                    android:text="Request Ride"
+                    android:text="@string/request_ride"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="15sp"
@@ -166,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                >
 
                 <ImageView
                     android:id="@+id/img"
@@ -322,7 +292,7 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:paddingRight="74dp"
-                    android:text="PROENV-Y"
+                    android:text="@string/proenv_y"
                     android:textColor="@color/white"
                     android:textSize="25sp"
                     android:textStyle="bold" />

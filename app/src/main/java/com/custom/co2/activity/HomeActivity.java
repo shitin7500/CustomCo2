@@ -7,13 +7,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
@@ -44,8 +44,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.custom.co2.R;
 import com.custom.co2.utils.AnimationUtils;
-import com.custom.co2.utils.CarListener;
-import com.custom.co2.utils.CustomCarSelect;
 import com.custom.co2.utils.CustomDirection;
 import com.custom.co2.utils.CustomMapClusterRenderer;
 import com.custom.co2.utils.CustomModel;
@@ -74,7 +72,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.maps.android.clustering.ClusterManager;
@@ -83,7 +80,6 @@ import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.tmall.ultraviewpager.UltraViewPager;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -114,11 +110,12 @@ import static com.custom.co2.utils.MapUtils.getScreenWidth;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener,
         Placelistener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        DirectionListener, GoogleMap.OnCameraIdleListener, CarListener,
+        DirectionListener, GoogleMap.OnCameraIdleListener,
         NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMarkerClickListener {
 
-    private static final long DELAY = 4500;
     private static final long INTERVAL = 1000 * 5; //1 minute
+    private static final long defaultInterval = 1500;
+    private long lastTimeClick = 0;
     private static final long FASTEST_INTERVAL = 1000 * 3;
     float screenRatio = 3.3f;
     List<LatLng> polyLineList;
@@ -133,7 +130,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     CardView destCard;
     ImageButton back;
     Button dest;
-    FloatingActionButton fab;
     SlidingUpPanelLayout sliding_layout;
     Button fetch, btn_proceed;
     double totleKM = 0.0;
@@ -236,17 +232,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Handler handler;
     private Marker carMarker, carMarker1, desMarker, carMarker2, carMarker3, desMarker2, desMarker3;
     private String TAG = "HomeActivity";
-    Runnable mStatusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                getDriverLocationUpdate();
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-            handler.postDelayed(mStatusChecker, DELAY);
-        }
-    };
+
     private Location mLastLoc;
 
     private ClusterManager<MyItem> mClusterManager;
@@ -259,7 +245,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private int index = 0;
     private String markerFlag = "BUS";
 
-
+    /**
+     * Method for manage location change requwst
+     */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
@@ -267,11 +255,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    /**
+     * Method for destroy activity
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -283,7 +277,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
-        //   toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.purple_200));
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -296,12 +289,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         tvUsername.setText(getShaedPref(HomeActivity.this, spUsername));
         tvEmail.setText(getShaedPref(HomeActivity.this, spEmail));
 
-        fab = findViewById(R.id.fab);
-        fab.hide();
-
         CustomModel.getInstance().setListener(this);
         CustomDirection.getInstance().setListener(this);
-        CustomCarSelect.getInstance().setListener(this);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -340,7 +329,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
             sliding_layout.setPanelHeight(0);
             sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-            fab.hide();
             MapUtils.createBottomUpAnimation(HomeActivity.this, back, backtop);
             position = new CameraPosition.Builder()
                     .target(new LatLng(mLastLoc.getLatitude(), mLastLoc.getLongitude()))
@@ -463,12 +451,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         FrameLayout frameLayout = findViewById(R.id.sliderLin);
         marginLayoutParams1 = (ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams();
 
-
         marginLayoutParams1.height = (int) (usableHeight / screenRatio);
         frameLayout.setLayoutParams(marginLayoutParams1);
 
     }
 
+    /**
+     * Override method for get place data
+     */
     @Override
     public void onPlace(Place place) {
         this.placeGet = place;
@@ -480,20 +470,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         btn_proceed.setVisibility(View.VISIBLE);
 
         btn_proceed.setOnClickListener(view -> {
-
+            if(SystemClock.elapsedRealtime() - lastTimeClick < defaultInterval){
+                return;
+            }
+            lastTimeClick = SystemClock.elapsedRealtime();
             if (btn_proceed.getText().toString().equals("Start")) {
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        showMovingCab(polyLineList);
-                    }
-                }, 100);
+                new Handler().postDelayed(() -> showMovingCab(polyLineList), 100);
                 linMode.setVisibility(View.GONE);
                 btn_proceed.setText("Stop");
             } else {
-
                 TripDialog();
             }
         });
@@ -505,27 +490,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    @Override
-    public void onCarSelect(JSONObject ob, int position, ImageView imgs) {
-        try {
-            img.setImageResource(ob.getInt("img"));
-            txt.setText(ob.getString("name"));
-            if (position == 1000) {
-                sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Override Method for get direction data
+     */
     @Override
     public void onDirectionsData(DirectionUtils utils) {
         this.util = utils;
         Log.e("distac", util.getDistance());
-
-
     }
 
+    /**
+     * Method called when activity resumed
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -542,6 +518,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    /**
+     * Method called when google api client connected
+     */
     @Override
     public void onConnected(Bundle bundle) {
         mLocationRequest = new LocationRequest();
@@ -557,9 +536,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Method for handle back press
+     */
     @Override
     public void onBackPressed() {
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout1);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -574,16 +555,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         } else {
             super.onBackPressed();
-            //  startActivity(new Intent(HomeActivity.this, MainActivity.class));
             finish();
         }
     }
 
+    /**
+     * Method for callback when google api client connection suspended
+     */
     @Override
     public void onConnectionSuspended(int i) {
 
     }
 
+    /**
+     * Method for build google api client
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -593,12 +579,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleApiClient.connect();
     }
 
+    /**
+     * Activity lifecycle method when activity starts
+     */
     @Override
     protected void onStart() {
         super.onStart();
         buildGoogleApiClient();
     }
 
+    /**
+     * Activity lifecycle method when activity pause for long time
+     */
     @Override
     protected void onStop() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
@@ -607,11 +599,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
     }
 
+    /**
+     * Method for request the permission for location above android-6
+     */
     private void makeLocationPermissionRequest() {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
+    /**
+     * Method for callback when permission accepted or denied
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -631,6 +629,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Method for prepare direction url
+     */
     private String getDirectionsUrl(LatLng origin, LatLng dest, String mapType) {
         String url = "";
         String strOrigin = "origin=" + origin.latitude + "," + origin.longitude;
@@ -648,6 +649,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return url;
     }
 
+    /**
+     * Async Method for grab data from enpoint from url
+     */
     private String downloadUrl(String strUrl) throws IOException {
         String data = "";
         InputStream iStream = null;
@@ -685,6 +689,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
+    /**
+     * Method for callback when side drawer item clicked
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -716,11 +723,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    /**
+     * Method for callback when market clicked
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
     }
 
+    /**
+     * Method for start getting polyline
+     */
     void staticPolyLine() {
         googleMap.clear();
         Log.e("Size", String.valueOf(polyLineList.get(0)));
@@ -730,20 +743,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             builder.include(latLng);
         }
         final LatLngBounds bounds = builder.build();
-        //googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-        //    @Override
-        //    public void onMapLoaded() {
+
         CameraUpdate mCameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, MAP_BOUND_PADDING);
         googleMap.animateCamera(mCameraUpdate);
-        //    }
-        //});
 
         MapAnimator.getInstance().animateRoute(googleMap, polyLineList);
-        // fab.show();
-        fab.hide();
         startCarAnimation(polyLineList.get(0).latitude, polyLineList.get(0).longitude);
     }
 
+    /**
+     * Override method called when map is ready
+     */
     @SuppressLint("ResourceType")
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -751,35 +761,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.googleMap.getUiSettings().setCompassEnabled(false);
         this.googleMap.getUiSettings().setMapToolbarEnabled(false);
 
-        // this.googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         this.googleMap.setMyLocationEnabled(true);
-        //this.googleMap.setTrafficEnabled(true);
-        try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
-            //boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.custom_map));
-        } catch (Resources.NotFoundException e) {
-            Log.e("error", "Can't find style. Error: ", e);
-        }
 
         View mapView = mapFragment.getView();
         if (mapView != null && mapView.findViewById(1) != null) {
-            // Get the button view
             View locationButton = ((View) mapView.findViewById(1).getParent()).findViewById(2);
-            // and next place it, on bottom right (as Google Maps app)
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
                     locationButton.getLayoutParams();
-            // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 30);
@@ -802,13 +793,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpClusterer();
     }
 
+    /**
+     * Method for callback when location changed
+     */
     @Override
     public void onLocationChanged(final Location location) {
-        Log.e("------>", "Chnaged.");
-        //Toast.makeText(this, "casll", Toast.LENGTH_SHORT).show();
         if (polyLineList == null || polyLineList.size() == 0) {
-            // Toast.makeText(this, "Call", Toast.LENGTH_SHORT).show();
-            fab.hide();
             if (mLastLoc == null) {
                 position = new CameraPosition.Builder()
                         .target(new LatLng(location.getLatitude(), location.getLongitude()))
@@ -819,18 +809,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .newCameraPosition(position);
 
                 googleMap.animateCamera(update);
-                if (carMarker1 == null) {
-                    //      carMarker1 = googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).anchor(0.5f,0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.source)));
-                }
-            } /*else {
-                MapUtils.animateMarker(location, carMarker1);
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude()
-                        , location.getLongitude()), 18f));
-            }*/
+            }
         }
         mLastLoc = location;
     }
 
+    /**
+     * Method for set up map cluster
+     */
     private void setUpClusterer() {
         mClusterManager = new ClusterManager<>(this, googleMap);
         googleMap.setOnCameraIdleListener(mClusterManager);
@@ -839,13 +825,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mClusterManager.setRenderer(new CustomMapClusterRenderer<>(this, googleMap, mClusterManager));
     }
 
+    /**
+     * Method for prepare polyline markers and ready for start car animation
+     */
     @SuppressLint("SetTextI18n")
     private void startCarAnimation(Double latitude, Double longitude) {
         LatLng latLng = new LatLng(latitude, longitude);
-
         currentLatlong = latLng;
-
-        // latLngUpdate = latLng;
         if (carMarker != null) {
             carMarker.remove();
         }
@@ -860,8 +846,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         View view_left = View.inflate(this, R.layout.custom_marker_infowindow_left, null);
         iconFactory_left.setContentView(view_left);
         LinearLayout ll_marker_left = view_left.findViewById(R.id.ll_marker_right);
-        TextView tv_timing_left = view_left.findViewById(R.id.tv_timing_right);
-        tv_timing_left.setText("5 mins");
         TextView tv_address_left = view_left.findViewById(R.id.tv_address_right);
         tv_address_left.setText(placeGet.getSrcAddress());
 
@@ -872,19 +856,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         carMarker2 = googleMap.addMarker(new MarkerOptions().position(latLng)
                 .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory.fromBitmap(iconFactory_left.makeIcon("current"))));
-
-//        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                if (marker.equals(carMarker2)) {// if marker source is clicked
-//                    destCard.setVisibility(View.VISIBLE);
-//                    dest.setEnabled(true);
-//                    sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-//                    MapUtils.createTopDownAnimation(HomeActivity.this, destCard, null);
-//                }
-//                return false;
-//            }
-//        });
 
         IconGenerator iconFactory_lef2 = new IconGenerator(this);
         iconFactory_lef2.setBackground(null);
@@ -959,25 +930,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             btn_Flight.setVisibility(View.VISIBLE);
             btn_Walking.setVisibility(View.GONE);
             btn_cycle.setVisibility(View.GONE);
-
         } else if (tempDistance > 50 && tempDistance <= 500) {
-
             btn_Flight.setVisibility(View.GONE);
             btn_Walking.setVisibility(View.GONE);
             btn_cycle.setVisibility(View.GONE);
-
         } else {
-
             btn_Flight.setVisibility(View.GONE);
             btn_Walking.setVisibility(View.VISIBLE);
             btn_cycle.setVisibility(View.VISIBLE);
-
         }
 
         linMode.setVisibility(View.VISIBLE);
-
     }
 
+    /**
+     * Method for callback when camera is Idle
+     */
     @Override
     public void onCameraIdle() {
         Projection projection = googleMap.getProjection();
@@ -1002,22 +970,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (mapview != null) {
                 maxX = mapview.getMeasuredWidth();
             }
-            if (mapview != null) {
-                float maxY = mapview.getMeasuredHeight();
-            }
-            float x = 0.0f;
-            float y = 0.0f;
 
-            //help of marker postion change infowindow position
             if (carMarker2 != null) {
 
                 if (screenPosition.x > 100 && screenPosition.x > maxX / 2) {
-                    //infowindow leftside move
                     Log.e("Side", "CarLeft");
                     carMarker3.setVisible(true);
                     carMarker2.setVisible(false);
                 } else {
-                    //infowindow rightside move
                     carMarker2.setVisible(true);
                     carMarker3.setVisible(false);
                     Log.e("Side", "CarRight");
@@ -1039,25 +999,24 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Method for activity lifecycle when activity is in backgound
+     */
     @Override
     protected void onPause() {
         super.onPause();
-        //stopRepeatingTask();
     }
 
-    private void getDriverLocationUpdate() {
-
-    }
-
+    /**
+     * Method for show car animation & moving cab
+     */
     private void showMovingCab(final List<LatLng> cabLatLngList) {
         handler = new Handler();
         runnable = () -> {
-            if (cabLatLngList!=null && index < cabLatLngList.size()) {
-
+            if (cabLatLngList != null && index < cabLatLngList.size()) {
                 updateCarLocation(cabLatLngList.get(index));
                 handler.postDelayed(runnable, 900);
                 ++index;
-
             } else {
                 handler.removeCallbacks(runnable);
                 TripDialog();
@@ -1066,11 +1025,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         handler.postDelayed(runnable, 1500);
     }
 
+    /**
+     * Method for update pinpoint location to show animation
+     */
     private void updateCarLocation(LatLng latLng) {
         if (movingCabMarker == null) {
             movingCabMarker = addCarMarkerAndGet(latLng);
         }
-
         if (previousLatLng == null) {
             currentLatLng = latLng;
             previousLatLng = currentLatLng;
@@ -1088,11 +1049,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             multiplier * currentLatLng.longitude + (1 - multiplier) * previousLatLng.longitude);
                     movingCabMarker.setPosition(nextLocation);
                     float rotation = MapUtils.getRotation(previousLatLng, nextLocation);
-                    //  if (!Float.isNaN(rotation)) {
                     movingCabMarker.setRotation(rotation);
-                    //     }
                     movingCabMarker.setAnchor(0.5f, 0.5f);
-//                    animateCamera(nextLocation);
                 }
             });
             valueAnimator.start();
@@ -1100,8 +1058,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         animateCamera(latLng);
     }
 
+    /**
+     * Method for show dialog when no route is found
+     */
     private void NoRouteDialog() {
-
         final Dialog dialog = new Dialog(HomeActivity.this);
         dialog.setContentView(R.layout.dialog_no_route);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
@@ -1124,6 +1084,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         dialog.show();
     }
 
+    /**
+     * Method for show trip dialog
+     */
     private void TripDialog() {
         Boolean isCo2 = false;
 
@@ -1242,11 +1205,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             );
 
         });
-        dialog.show();
+        if (!this.isFinishing())
+            dialog.show();
     }
 
+    /**
+     * Method for calculate how much co2 consumed
+     */
     private double calculateCO2(String distance) {
-
 
         double basicValue = 0;
         double co2value = 0;
@@ -1292,6 +1258,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return co2value;
     }
 
+    /**
+     * Method for add record in firebase
+     */
     private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2, String FuleType, String VehicleType, String rideType) {
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
@@ -1324,11 +1293,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
+    /**
+     * Method for animation camera on map
+     */
     private void animateCamera(LatLng latLng) {
         CameraPosition cameraPosition = CameraPosition.builder().target(latLng).zoom(16.5f).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
+    /**
+     * Method for get marker on basis of selection
+     */
     private Marker addCarMarkerAndGet(LatLng latLng) {
 
         if (markerFlag.equals("CAR")) {
@@ -1346,6 +1321,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             return googleMap.addMarker(new MarkerOptions().position(latLng).anchor(0.5f, 0.5f).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_bike)));
     }
 
+    /**
+     * Method for add source and destination marker
+     */
     private Marker addOriginDestinationMarkerAndGet(LatLng latLng) {
         BitmapDescriptor bitmapDescriptor =
                 BitmapDescriptorFactory.fromBitmap(MapUtils.getOriginDestinationMarkerBitmap());
@@ -1353,15 +1331,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new MarkerOptions().position(latLng).flat(true).icon(bitmapDescriptor));
     }
 
+    /**
+     * Method for Aynctask to get direction data
+     */
     @SuppressLint("StaticFieldLeak")
     private class DownloadTask extends AsyncTask<String, Void, String> {
-        // Downloading data in non-ui thread
         @Override
         protected String doInBackground(String... url) {
-            // For storing data from web service
             String data = "";
             try {
-                // Fetching the data from web service
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
@@ -1373,11 +1351,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             ParserTask parserTask = new ParserTask();
-            //Invokes the thread for parsing the JSON data
             parserTask.execute(result);
         }
     }
 
+    /**
+     * Method for Asyntask to parse direction data
+     */
     @SuppressLint("StaticFieldLeak")
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
@@ -1394,7 +1374,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Log.e("JsonObject", jObject.toString());
                     routes = parser.parse(jObject);
                 } else {
-
                     new Thread() {
                         public void run() {
                             HomeActivity.this.runOnUiThread(new Runnable() {
@@ -1404,7 +1383,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             });
                         }
                     }.start();
-
                 }
 
             } catch (Exception e) {

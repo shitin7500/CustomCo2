@@ -50,6 +50,9 @@ public class LoginActivity extends AppCompatActivity {
     Dialog progressDialog;
 
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for handle clicks
+     */
     private void clicks() {
         btnRegistration.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
@@ -80,6 +86,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Method for show forgot password dialog
+     */
     private void showForgotPasswordDialog() {
 
         final Dialog dialog = new Dialog(LoginActivity.this);
@@ -108,6 +117,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method for check validations
+     */
     private boolean Valid() {
         if (edEmail.getText().toString().isEmpty()) {
             edEmail.setError("Enter email");
@@ -122,6 +134,9 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Method for init view & variables
+     */
     private void init() {
         btnRegistration = findViewById(R.id.tv_sign_up);
         edEmail = findViewById(R.id.ed_login_email);
@@ -130,7 +145,9 @@ public class LoginActivity extends AppCompatActivity {
         btnForgotPassword = findViewById(R.id.btn_forgot_password);
     }
 
-
+    /**
+     * Method for check user already existing
+     */
     private void checkUser(String email, String password) {
         progressDialog.show();
         db.collection("users")
@@ -171,6 +188,9 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Method for check email
+     */
     private void checkEmail(String email, Dialog dialog) {
         progressDialog.show();
         db.collection("users")

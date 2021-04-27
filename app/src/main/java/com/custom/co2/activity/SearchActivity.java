@@ -72,11 +72,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -89,12 +87,9 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             new LatLng(6.4626999, 68.1097),
             new LatLng(35.513327, 97.39535869999999));
     EditText mSearchEdittext;
-    private Location mLastLoc;
     LocationRequest mLocationRequest;
     private static final long INTERVAL = 1000 * 5; //1 minute
     private static final long FASTEST_INTERVAL = 1000 * 3;
-    //ImageView mClear;
-    private static final int PLACE_PICKER_REQUEST = 1000;
     private GoogleApiClient mClient;
     private GoogleMap googleMap;
     LatLng loc;
@@ -106,14 +101,14 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     String srcAdd = "";
     Button cuurent;
     ImageView iv_line;
-LinearLayout linSetLocation;
-    String strAddressType = "";
+    LinearLayout linSetLocation;
     SupportMapFragment mapFragment;
     Handler handler = new Handler();
     private AnimatedVectorDrawableCompat avd;
 
-
-
+    /**
+     * Method for callback of place selected
+     */
     @Override
     public void onPlace(Place place) {
         this.placeCust = place;
@@ -122,12 +117,18 @@ LinearLayout linSetLocation;
         }
     }
 
+    /**
+     * Method for callback when activity resumed
+     */
     @Override
     protected void onResume() {
         super.onResume();
 
     }
 
+    /**
+     * Method for start animation of view
+     */
     private void startAnimation(boolean isStart) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isStart) {
@@ -149,12 +150,14 @@ LinearLayout linSetLocation;
 
     private Runnable action = () -> repeatAnimation();
 
+    /**
+     * Method for repeat animation
+     */
     private void repeatAnimation() {
         if (avd != null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //your code
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -166,16 +169,20 @@ LinearLayout linSetLocation;
                     });
                 }
             }).start();
-
         }
     }
 
+    /**
+     * Method for destroy activity
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
+    /**
+     * Method for initialize layout
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,14 +251,9 @@ LinearLayout linSetLocation;
         avd = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_line);
         iv_line.setBackground(avd);
         iv_line.setVisibility(View.GONE);
-        //  mClear = findViewById(R.id.clear);
-        //  mClear.setOnClickListener(this);
-
 
         mRecyclerView.setAdapter(mAdapter);
         final AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                //.setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
-                //.setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .setCountry("IN")
                 .build();
         mAdapter = new PlaceAutocompleteAdapter(this, mClient, BOUNDS_INDIA, typeFilter);
@@ -289,7 +291,6 @@ LinearLayout linSetLocation;
                             mRecyclerView.clearAnimation();
                             mRecyclerView.setVisibility(View.VISIBLE);
                             frame.setVisibility(View.GONE);
-                            //layout_home_work.setVisibility(View.VISIBLE);
                         }
 
                         @Override
@@ -303,7 +304,6 @@ LinearLayout linSetLocation;
                         }
                     });
                 } else {
-                    //layout_home_work.setVisibility(View.VISIBLE);
                     mSearchEdittext.setFocusable(true);
                     mSearchEdittext.setCursorVisible(true);
                     mSearchEdittext.requestFocus();
@@ -349,24 +349,18 @@ LinearLayout linSetLocation;
                 if (count > 0) {
                     if (mAdapter != null) {
                         mRecyclerView.setAdapter(mAdapter);
-
                         Log.e("mAdapterSize", mAdapter.getItemCount() + "");
                     }
                 } else {
                     if (mAdapter != null) {
-
                         mAdapter.clearList();
                         mAdapter.notifyDataSetChanged();
                         mRecyclerView.setAdapter(mAdapter);
                         Log.e("mAdapterSize1", mAdapter.getItemCount() + "");
-
                     }
                 }
                 if (!s.toString().equals("") && mClient.isConnected()) {
                     mAdapter.getFilter().filter(s.toString());
-                } else if (!mClient.isConnected()) {
-                    //oast.makeText(getApplicationContext(), Constants.API_NOT_CONNECTED, Toast.LENGTH_SHORT).show();
-                    Log.e("connection", "NOT CONNECTED");
                 }
             }
 
@@ -391,7 +385,6 @@ LinearLayout linSetLocation;
                         mRecyclerView.clearAnimation();
                         mRecyclerView.setVisibility(View.GONE);
                         frame.setVisibility(View.VISIBLE);
-
                         mSearchEdittext.setInputType(InputType.TYPE_NULL);
                         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                         mapFragment.getMapAsync(SearchActivity.this);
@@ -408,34 +401,9 @@ LinearLayout linSetLocation;
 
     }
 
-
-    private void setDestinationOnMap(TextView tvData) {
-
-        if (!tvData.getText().toString().equalsIgnoreCase("")) {
-            if (!tvData.getText().toString().equalsIgnoreCase(cuurent.getText().toString())) {
-                mSearchEdittext.setText(tvData.getText().toString());
-                if (placeCust != null) {
-                    Place place = new Place(new LatLng(placeCust.srcLat, placeCust.srcLon), getLocationFromAddress(SearchActivity.this, tvData.getText().toString()));
-                    place.setSrcAddress(placeCust.getSrcAddress());
-                    place.setDestAddress(tvData.getText().toString());
-                    CustomModel.getInstance().changeState(place);
-                } else {
-                    if (loc != null) {
-                        Place place = new Place(new LatLng(loc.latitude, loc.longitude), getLocationFromAddress(SearchActivity.this, tvData.getText().toString()));
-                        place.setSrcAddress(srcAdd);
-                        place.setDestAddress(tvData.getText().toString());
-                        CustomModel.getInstance().changeState(place);
-                    }
-                }
-                onBack();
-            } else {
-                Toast.makeText(getApplicationContext(), "Source and Destination not same", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), "Home address is not added", Toast.LENGTH_SHORT).show();
-        }
-    }
-
+    /**
+     * Method for handle on back press
+     */
     private void onBack() {
         MapUtils.SlideToAbove(mRecyclerView, new Animation.AnimationListener() {
             @Override
@@ -475,26 +443,9 @@ LinearLayout linSetLocation;
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            com.google.android.libraries.places.api.model.Place place = Autocomplete.getPlaceFromIntent(data);
-            //AddAddressToDatabase(place.getAddress(), strAddressType);
-
-            Log.i("+++++", "Place: " + place.getAddress());
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-            // TODO: Handle the error.
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Log.i("+++++", status.getStatusMessage());
-        } else if (resultCode == RESULT_CANCELED) {
-            // The user canceled the operation.
-        }
-
-    }
-
+    /**
+     * Method for create location request
+     */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(INTERVAL);
@@ -509,23 +460,35 @@ LinearLayout linSetLocation;
         }
     }
 
+    /**
+     * Method for callback when activity start
+     */
     @Override
     protected void onStart() {
         super.onStart();
         mClient.connect();
     }
 
+    /**
+     * Method for callback when activity is in background for long time
+     */
     @Override
     protected void onStop() {
         mClient.disconnect();
         super.onStop();
     }
 
+    /**
+     * Method for callback when google api client connection failed
+     */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 
+    /**
+     * Method for get callback when place clicked
+     */
     @Override
     public void onPlaceClick(ArrayList<PlaceAutocompleteAdapter.PlaceAutocomplete> mResultList, int position) {
         onProgressChanged(false);
@@ -538,16 +501,13 @@ LinearLayout linSetLocation;
                 placeResult.setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
                     public void onResult(@NonNull PlaceBuffer places) {
-
                         try {
-
                             if (placeCust != null) {
                                 Place place = new Place(new LatLng(placeCust.srcLat, placeCust.srcLon), getLocationFromAddress(SearchActivity.this, String.valueOf(mResultList.get(position).description)));
                                 place.setSrcAddress(placeCust.getSrcAddress());
                                 place.setDestAddress(String.valueOf(mResultList.get(position).description));
                                 CustomModel.getInstance().changeState(place);
                             } else {
-
                                 Place place = new Place(new LatLng(loc.latitude, loc.longitude), getLocationFromAddress(SearchActivity.this, String.valueOf(mResultList.get(position).description)));
                                 place.setSrcAddress(srcAdd);
                                 place.setDestAddress(String.valueOf(mResultList.get(position).description));
@@ -592,37 +552,37 @@ LinearLayout linSetLocation;
         }
     }
 
+    /**
+     * Method for get lat lng from address
+     */
     public LatLng getLocationFromAddress(Context context, String strAddress) {
-
         Geocoder coder = new Geocoder(context);
         List<Address> address;
         LatLng p1 = null;
-
         try {
-            // May throw an IOException
             address = coder.getFromLocationName(strAddress, 5);
             if (address == null) {
                 return null;
             }
-
             Address location = address.get(0);
             p1 = new LatLng(location.getLatitude(), location.getLongitude());
-
         } catch (IOException ex) {
-
             ex.printStackTrace();
         }
 
         return p1;
     }
 
+    /**
+     * Method for get callback when map is ready
+     */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.googleMap.getUiSettings().setCompassEnabled(false);
         this.googleMap.getUiSettings().setMapToolbarEnabled(false);
         try {
-            boolean success = googleMap.setMapStyle(
+            googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.custom_map));
         } catch (Resources.NotFoundException e) {
@@ -630,13 +590,7 @@ LinearLayout linSetLocation;
         }
         createLocationRequest();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         googleMap.setMyLocationEnabled(true);
@@ -651,12 +605,9 @@ LinearLayout linSetLocation;
 
         View mapView = mapFragment.getView();
         if (mapView != null && mapView.findViewById(0) != null) {
-            // Get the button view
             View locationButton = ((View) mapView.findViewById(0).getParent()).findViewById(0);
-            // and next place it, on bottom right (as Google Maps app)
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
                     locationButton.getLayoutParams();
-            // position on right bottom
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
             layoutParams.setMargins(0, 0, 30, 30);
@@ -710,9 +661,11 @@ LinearLayout linSetLocation;
         });
     }
 
+    /**
+     * Method for callback when location changed
+     */
     @Override
     public void onLocationChanged(Location location) {
-        mLastLoc = location;
         if (carMarker == null) {
             carMarker = googleMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.source)));
             carMarker.remove();
@@ -739,12 +692,13 @@ LinearLayout linSetLocation;
         }
     }
 
+    /**
+     * Method for get callback when progress changed
+     */
     @Override
     public void onProgressChanged(boolean state) {
         startAnimation(state);
     }
-
-
 
 
 }

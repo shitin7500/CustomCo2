@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="ContentDescription,Autofill,LabelFor">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/destCard"
@@ -56,7 +57,7 @@
                         android:background="#e2e2e2"
                         android:ellipsize="end"
                         android:gravity="start|center"
-                        android:hint="Set Pick Up"
+                        android:hint="@string/set_pick_up"
                         android:imeOptions="actionDone"
                         android:paddingStart="5dp"
                         android:paddingEnd="5dp"
@@ -132,7 +133,7 @@
             android:layout_marginBottom="25dp"
             android:paddingStart="80dp"
             android:paddingEnd="80dp"
-            android:text="Done"
+            android:text="@string/done"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="15sp"

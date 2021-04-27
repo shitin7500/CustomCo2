@@ -1,8 +1,8 @@
+<!--Common string listed-->
 <resources>
     <string name="app_name">PROENV- Y</string>
 
     <string name="Map_Api_Key">AIzaSyClEy7iOrtMOyD7_hLoALTz6o_1vur7mYc</string>
-<!--    <string name="Map_Api_Key">AIzaSyCYH_ZrSBHf3r_Ov04IuHNS8TaJDb-Fp_M</string>-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -13,12 +13,56 @@
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
     <string name="change_password">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="submit">Submit</string>
+    <string name="don_t_have_an_account">Don\'t have an Account ?</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="set_pick_up">Set Pick Up</string>
+    <string name="done">Done</string>
+    <string name="already_have_an_account">Already have an account ?</string>
+    <string name="username">Username</string>
+    <string name="contact_number">Contact number</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="current_location">Current Location</string>
+    <string name="where_to">Where to?</string>
+    <string name="statistic">Statistic</string>
+    <string name="total_co2">Total CO2</string>
+    <string name="_0">0</string>
+    <string name="total_calories">Total Calories</string>
+    <string name="no_data_available">No Data Available</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="start">Start</string>
+    <string name="request_ride">Request Ride</string>
+    <string name="proenv_y">PROENV-Y</string>
+    <string name="trouble_finding_a_route_please_try_another_location">Trouble finding a route, please try another location.</string>
+    <string name="error">Error</string>
+    <string name="okay">Okay</string>
+    <string name="please_wait">Please Wait</string>
+    <string name="select_date">Select Date</string>
+    <string name="trip_completed">Trip Completed</string>
+    <string name="source_address">Source Address</string>
+    <string name="destination_address">Destination Address</string>
+    <string name="destination">Destination</string>
+    <string name="distance">Distance</string>
+    <string name="_5_km">5 KM</string>
+    <string name="total_co2_kg">Total Co2 (kg)</string>
+    <string name="disclaimer_for_electric_phev_cars_the_following_results_are_based_on_the_assumption_that_the_energy_mix_to_charge_the_vehicle_is_certified_green_electricity">Disclaimer for electric/phev cars - The following results are based on the assumption that the energy mix to charge the vehicle is CERTIFIED GREEN ELECTRICITY.</string>
+    <string name="disclaimer_the_following_results_are_an_approximation_and_may_not_represent_the_actual_co2_emissions_as_it_may_vary_from_model_to_model_and_manufacture_year">Disclaimer - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year.</string>
+    <string name="source">Source</string>
+    <string name="ride_type">Ride Type</string>
+    <string name="co2_kg">CO2 (kg)</string>
+    <string name="set_location_on_map">Set Location on Map</string>
 
     <array name="vehicleType">
         <item>Compact car</item>
         <item>Mid range</item>
         <item>Luxury/SUV/Van</item>
-
     </array>
 
     <array name="FuleType">
@@ -27,7 +71,6 @@
         <item>Hybrid</item>
         <item>PHEV</item>
         <item>Electric</item>
-
     </array>
 
 </resources>

@@ -18,32 +18,16 @@ public class Place {
         return srcLat;
     }
 
-    public void setSrcLat(double srcLat) {
-        this.srcLat = srcLat;
-    }
-
     public double getSrcLon() {
         return srcLon;
-    }
-
-    public void setSrcLon(double srcLon) {
-        this.srcLon = srcLon;
     }
 
     public double getDestLat() {
         return destLat;
     }
 
-    public void setDestLat(double destLat) {
-        this.destLat = destLat;
-    }
-
     public double getDestLon() {
         return destLon;
-    }
-
-    public void setDestLon(double destLon) {
-        this.destLon = destLon;
     }
 
     public LatLng getSrcLatLng(){return new LatLng(srcLat,srcLon);}

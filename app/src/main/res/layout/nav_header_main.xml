@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Aditya Patel"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="@dimen/margin_16sp"
         android:textStyle="bold"

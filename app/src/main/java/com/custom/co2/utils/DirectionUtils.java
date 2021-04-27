@@ -19,16 +19,8 @@ public class DirectionUtils implements Serializable {
         this.duration = duration;
     }
 
-    public String getStAddress() {
-        return stAddress;
-    }
-
     public void setStAddress(String stAddress) {
         this.stAddress = stAddress;
-    }
-
-    public String getEndAddress() {
-        return endAddress;
     }
 
     public void setEndAddress(String endAddress) {
