@@ -2,7 +2,6 @@ package com.custom.co2.activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -11,17 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.custom.co2.R;
 import com.custom.co2.utils.Constant;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,13 +28,11 @@ import static com.custom.co2.utils.Constant.showProgressDialog;
 import static com.custom.co2.utils.Constant.spConatact;
 import static com.custom.co2.utils.Constant.spDob;
 import static com.custom.co2.utils.Constant.spEmail;
-import static com.custom.co2.utils.Constant.spPassword;
-import static com.custom.co2.utils.Constant.spUserId;
 import static com.custom.co2.utils.Constant.spUsername;
 
 public class UpdateProfileActivity extends AppCompatActivity {
     FirebaseFirestore db;
-    String TAG = "RegisterActivity";
+    String TAG = "UpdateProfileActivity";
     TextView btnLogin;
     EditText edUsername, edEmail, edContact, edDob;
     final Calendar myCalendar = Calendar.getInstance();

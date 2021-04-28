@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -123,7 +124,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LinearLayout linMode;
     String trpSource = "";
     String trpDestination = "";
-    String trpDestance = "";
+    String trpDistance = "";
     ImageView btn_car, btn_Walking, btn_cycle, btn_Bus, btn_Flight, btn_Train;
     GoogleApiClient mGoogleApiClient;
     LocationRequest mLocationRequest;
@@ -151,7 +152,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     DirectionUtils util;
     Place placeGet;
 
-    int FuleSelectedPos = 0;
+    int FuelSelectedPos = 0;
     int VehicleSelectedPos = 0;
 
     Animation.AnimationListener uptop = new Animation.AnimationListener() {
@@ -308,6 +309,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         btn_cycle = findViewById(R.id.btn_cycle);
         btn_Bus = findViewById(R.id.btn_bus);
         btn_Flight = findViewById(R.id.btn_flight);
+
         btn_Train = findViewById(R.id.btn_train);
         btn_Bus.setSelected(true);
         linMode = findViewById(R.id.lin_mode);
@@ -477,7 +479,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (btn_proceed.getText().toString().equals("Start")) {
                 new Handler().postDelayed(() -> showMovingCab(polyLineList), 100);
                 linMode.setVisibility(View.GONE);
-                btn_proceed.setText("Stop");
+                btn_proceed.setText("Skip");
             } else {
                 TripDialog();
             }
@@ -882,7 +884,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             tv_timing_right.setText(util.getDuration());
 
             RideDistance = util.getDuration();
-            trpDestance = util.getDistance();
+            trpDistance = util.getDistance();
             String[] separated = util.getDistance().replace(",", "").split(" ");
             totalKM = Double.parseDouble(separated[0]);
             originLatlong = placeGet.getSrcLat() + "," + placeGet.getSrcLon();
@@ -909,13 +911,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             tv_timing_right.setText(util.getDuration());
 
             RideDistance = util.getDistance();
-            trpDestance = util.getDistance();
+            trpDistance = util.getDistance();
         }
         TextView tv_address_righ2 = view_righ2.findViewById(R.id.tv_address_right);
         tv_address_righ2.setText(placeGet.getDestAddress());
         trpSource = placeGet.getSrcAddress().toString();
         trpDestination = placeGet.getDestAddress().toString();
-        trpDestance = "";
+        trpDistance = "";
         LinearLayout ll_marker_righ2 = view_righ2.findViewById(R.id.ll_marker_right);
         ll_marker_righ2.setPadding(0, 0, (int) (getScreenWidth() / 1.9), 0);
         desMarker3 = googleMap.addMarker(new MarkerOptions().position(polyLineList.get(polyLineList.size() - 1))
@@ -1169,7 +1171,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } else {
                     txtdec1.setVisibility(View.GONE);
                 }
-                FuleSelectedPos = position;
+                FuelSelectedPos = position;
                 txtCo2.setText(String.format("%.2f",
                         calculateCO2(RideDistance)));
             }
@@ -1216,35 +1218,35 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         double basicValue = 0;
         double co2value = 0;
-        if (FuleSelectedPos == 0 && VehicleSelectedPos == 0) {
+        if (FuelSelectedPos == 0 && VehicleSelectedPos == 0) {
             basicValue = 0.28;
-        } else if (FuleSelectedPos == 0 && VehicleSelectedPos == 1) {
+        } else if (FuelSelectedPos == 0 && VehicleSelectedPos == 1) {
             basicValue = 0.34;
-        } else if (FuleSelectedPos == 0 && VehicleSelectedPos == 2) {
+        } else if (FuelSelectedPos == 0 && VehicleSelectedPos == 2) {
             basicValue = 0.41;
-        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 0) {
+        } else if (FuelSelectedPos == 1 && VehicleSelectedPos == 0) {
             basicValue = 0.24;
-        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 1) {
+        } else if (FuelSelectedPos == 1 && VehicleSelectedPos == 1) {
             basicValue = 0.31;
-        } else if (FuleSelectedPos == 1 && VehicleSelectedPos == 2) {
+        } else if (FuelSelectedPos == 1 && VehicleSelectedPos == 2) {
             basicValue = 0.39;
-        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 0) {
+        } else if (FuelSelectedPos == 2 && VehicleSelectedPos == 0) {
             basicValue = 0.21;
-        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 1) {
+        } else if (FuelSelectedPos == 2 && VehicleSelectedPos == 1) {
             basicValue = 0.26;
-        } else if (FuleSelectedPos == 2 && VehicleSelectedPos == 2) {
+        } else if (FuelSelectedPos == 2 && VehicleSelectedPos == 2) {
             basicValue = 0.30;
-        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 0) {
+        } else if (FuelSelectedPos == 3 && VehicleSelectedPos == 0) {
             basicValue = 0.19;
-        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 1) {
+        } else if (FuelSelectedPos == 3 && VehicleSelectedPos == 1) {
             basicValue = 0.24;
-        } else if (FuleSelectedPos == 3 && VehicleSelectedPos == 2) {
+        } else if (FuelSelectedPos == 3 && VehicleSelectedPos == 2) {
             basicValue = 0.28;
-        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 0) {
+        } else if (FuelSelectedPos == 4 && VehicleSelectedPos == 0) {
             basicValue = 0.07;
-        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 1) {
+        } else if (FuelSelectedPos == 4 && VehicleSelectedPos == 1) {
             basicValue = 0.08;
-        } else if (FuleSelectedPos == 4 && VehicleSelectedPos == 2) {
+        } else if (FuelSelectedPos == 4 && VehicleSelectedPos == 2) {
             basicValue = 0.10;
         }
 
@@ -1261,7 +1263,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * Method for add record in firebase
      */
-    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2, String FuleType, String VehicleType, String rideType) {
+    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2,
+                            String FuleType, String VehicleType, String rideType) {
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         Map<String, Object> user = new HashMap<>();

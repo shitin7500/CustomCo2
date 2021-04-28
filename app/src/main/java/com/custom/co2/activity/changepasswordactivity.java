@@ -27,7 +27,7 @@ import static com.custom.co2.utils.Constant.spEmail;
 
 public class changepasswordactivity extends AppCompatActivity {
     FirebaseFirestore db;
-    String TAG = "RegisterActivity";
+    String TAG = "changepasswordactivity";
     TextView btnLogin;
     EditText edt_old_password, edt_new_password, edt_confirm_password;
     Dialog progressDialog;
@@ -115,7 +115,7 @@ public class changepasswordactivity extends AppCompatActivity {
     }
 
     /**
-     * Method for check email is existing
+     * Method for checking email already exists.
      */
     private void checkPassword(String password) {
         progressDialog.show();
@@ -143,7 +143,7 @@ public class changepasswordactivity extends AppCompatActivity {
                                 Log.e(TAG, "NullPointerException: " + e.getMessage());
                             }
                         } else {
-                            Constant.showAlertDailogBox(changepasswordactivity.this, "Old Password Don't Matched");
+                            Constant.showAlertDailogBox(changepasswordactivity.this, "Old Password does not match " );
                         }
                         progressDialog.dismiss();
                     }

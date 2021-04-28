@@ -176,7 +176,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_bg_selection"
+            android:background="@drawable/btn_bg_selection_bus"
             android:gravity="center"
             android:layout_marginHorizontal="2dp"
             android:padding="@dimen/margin_8dp"
@@ -208,7 +208,7 @@
             android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_bg_selection"
+            android:background="@drawable/btn_bg_selection_train"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
             android:textColor="@drawable/btn_text_selection"
@@ -223,14 +223,14 @@
             android:layout_marginHorizontal="2dp"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:background="@drawable/btn_bg_selection"
+            android:background="@drawable/btn_bg_selection_flight"
             android:gravity="center"
             android:padding="@dimen/margin_8dp"
             android:textColor="@drawable/btn_text_selection"
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:srcCompat="@drawable/ic_Flight" />
+            app:srcCompat="@drawable/ic_flight" />
 
 
         <ImageView
