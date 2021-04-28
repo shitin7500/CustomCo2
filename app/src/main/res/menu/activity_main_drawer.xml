@@ -11,7 +11,7 @@
             android:title="@string/home" />
         <item
             android:id="@+id/nav_Score_Board"
-            android:icon="@drawable/ic_baseline_history_24"
+            android:icon="@drawable/ic_trophy"
             android:title="@string/score_board" />
         <item
             android:id="@+id/nav_Profile"
