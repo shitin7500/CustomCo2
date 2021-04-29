@@ -311,6 +311,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         btn_Train = findViewById(R.id.btn_train);
         btn_car.setSelected(true);
+        markerFlag = "CAR";
         linMode = findViewById(R.id.lin_mode);
         sliding_layout = findViewById(R.id.sliding_layout);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);

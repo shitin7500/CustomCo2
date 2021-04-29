@@ -638,7 +638,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
             @Override
             public void onClick(View v) {
                 if (done.getText().toString().equalsIgnoreCase("Done")) {
-                    if (placeCust != null) {
+                    if ( placeCust != null) {
                         Place place = new Place(new LatLng(placeCust.srcLat, placeCust.srcLon), googleMap.getCameraPosition().target);
                         place.setSrcAddress(placeCust.getSrcAddress());
                         place.setDestAddress(mSearchEdittext.getText().toString());
