@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -147,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng latLngUpdate;
     LatLng currentLatlong;
     Dialog progressDialog;
-    CircleImageView img_profile;
+    CircleImageView img_logo;
     TextView tvUsername, tvEmail;
     DirectionUtils util;
     Place placeGet;
@@ -282,7 +281,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this);
 
         View hView = navigationView.getHeaderView(0);
-        img_profile = hView.findViewById(R.id.img_profile);
+        img_logo = hView.findViewById(R.id.img_logo);
         tvUsername = hView.findViewById(R.id.tvUsername);
         tvEmail = hView.findViewById(R.id.tvEmail);
         progressDialog = showProgressDialog(HomeActivity.this);
@@ -311,7 +310,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         btn_Flight = findViewById(R.id.btn_flight);
 
         btn_Train = findViewById(R.id.btn_train);
-        btn_Bus.setSelected(true);
+        btn_car.setSelected(true);
         linMode = findViewById(R.id.lin_mode);
         sliding_layout = findViewById(R.id.sliding_layout);
         sliding_layout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -581,6 +580,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mGoogleApiClient.connect();
     }
 
+
     /**
      * Activity lifecycle method when activity starts
      */
@@ -763,7 +763,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.googleMap.getUiSettings().setCompassEnabled(false);
         this.googleMap.getUiSettings().setMapToolbarEnabled(false);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         this.googleMap.setMyLocationEnabled(true);
@@ -1150,7 +1152,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (markerFlag.equals("WALK")) {
                 basiccalories = 47;
             } else {
-                basiccalories = 22;
+                basiccalories = 25;
             }
 
             if (RideDistance.contains(" km")) {
@@ -1195,7 +1197,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Boolean finalIsCo = isCo2;
         btnSubmit.setOnClickListener(view -> {
             progressDialog.show();
-            AddRecored(txtSource.getText().toString(),
+            AddTripRecord(txtSource.getText().toString(),
                     txtDestination.getText().toString(),
                     txtDistance.getText().toString(),
                     txtCo2.getText().toString(),
@@ -1255,16 +1257,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             co2value = basicValue * (Double.parseDouble(distance.replace(" m", "")) / 1000);
         }
-
-
         return co2value;
     }
 
     /**
      * Method for add record in firebase
      */
-    private void AddRecored(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2,
-                            String FuleType, String VehicleType, String rideType) {
+    private void AddTripRecord(String Source, String Destination, String Distance, String Co2, Dialog dialog, Boolean isCo2,
+                            String FuelType, String VehicleType, String rideType) {
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         Map<String, Object> user = new HashMap<>();
@@ -1277,10 +1277,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         user.put("RideType", rideType);
         if (markerFlag.equals("CAR")) {
             user.put("VehicleType", VehicleType);
-            user.put("FuleType", FuleType);
+            user.put("FuelType", FuelType);
         } else {
             user.put("VehicleType", "");
-            user.put("FuleType", "");
+            user.put("FuelType", "");
         }
         user.put("Date", date);
         FirebaseFirestore db = FirebaseFirestore.getInstance();

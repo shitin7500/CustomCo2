@@ -171,21 +171,6 @@
         tools:visibility="visible">
 
         <ImageView
-            android:id="@+id/btn_bus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:background="@drawable/btn_bg_selection_bus"
-            android:gravity="center"
-            android:layout_marginHorizontal="2dp"
-            android:padding="@dimen/margin_8dp"
-            android:textColor="@drawable/btn_text_selection"
-            android:textSize="@dimen/margin_18sp"
-            android:textStyle="bold"
-            app:srcCompat="@drawable/ic_bus" />
-
-        <ImageView
             android:id="@+id/btn_car"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -199,7 +184,6 @@
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold"
             app:srcCompat="@drawable/ic_car" />
-
 
         <ImageView
             android:id="@+id/btn_train"
@@ -215,6 +199,21 @@
             android:textSize="@dimen/margin_18sp"
             android:textStyle="bold"
             app:srcCompat="@drawable/ic_train" />
+
+        <ImageView
+            android:id="@+id/btn_bus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:background="@drawable/btn_bg_selection_bus"
+            android:gravity="center"
+            android:layout_marginHorizontal="2dp"
+            android:padding="@dimen/margin_8dp"
+            android:textColor="@drawable/btn_text_selection"
+            android:textSize="@dimen/margin_18sp"
+            android:textStyle="bold"
+            app:srcCompat="@drawable/ic_bus" />
 
         <ImageView
             android:id="@+id/btn_flight"

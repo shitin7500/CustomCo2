@@ -34,7 +34,7 @@
     <string name="statistic">Statistics</string>
     <string name="total_co2">Total CO2(Kg) </string>
     <string name="_0">0</string>
-    <string name="total_calories">Total Calories(kCal)</string>
+    <string name="total_calories">Total Calories</string>
     <string name="no_data_available">No trip history available </string>
     <string name="update_profile">Update Profile</string>
     <string name="start">Start</string>
@@ -52,7 +52,7 @@
     <string name="distance">Distance</string>
     <string name="_5_km">5 KM</string>
     <string name="total_co2_kg">Total Co2(Kg)</string>
-    <string name="disclaimer_for_electric_phev_cars_the_following_results_are_based_on_the_assumption_that_the_energy_mix_to_charge_the_vehicle_is_certified_green_electricity">Disclaimer for electric/phev cars - The following results are based on the assumption that the energy mix to charge the vehicle is CERTIFIED GREEN ELECTRICITY.</string>
+    <string name="disclaimer_for_electric_phev_cars_the_following_results_are_based_on_the_assumption_that_the_energy_mix_to_charge_the_vehicle_is_certified_green_electricity">Disclaimer - The following results are based on the assumption that the energy mix to charge the vehicle is CERTIFIED GREEN ELECTRICITY.</string>
     <string name="disclaimer_the_following_results_are_an_approximation_and_may_not_represent_the_actual_co2_emissions_as_it_may_vary_from_model_to_model_and_manufacture_year">Disclaimer - The following results are an approximation and may not represent the actual co2 emissions as it may vary from model to model and manufacture year.</string>
     <string name="source">Source</string>
     <string name="ride_type">Ride Type</string>

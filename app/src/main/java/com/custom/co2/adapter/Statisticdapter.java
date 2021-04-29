@@ -40,7 +40,8 @@ public class Statisticdapter extends RecyclerView.Adapter<Statisticdapter.ViewHo
         holder.txtCO2.setText(arrayListData.get(position).getString("Co2"));
 
         if (arrayListData.get(position).getString("RideType").equals("CAR"))
-            holder.txtVehicle.setText(arrayListData.get(position).getString("RideType") + "(" + (arrayListData.get(position).getString("VehicleType") + "/" + arrayListData.get(position).getString("FuleType")) + ")");
+            holder.txtVehicle.setText(arrayListData.get(position).getString("RideType") + "(" + (arrayListData.get(position).getString("VehicleType")
+                    + "/" + arrayListData.get(position).getString("FuleType")) + ")");
         else
             holder.txtVehicle.setText(arrayListData.get(position).getString("RideType"));
 

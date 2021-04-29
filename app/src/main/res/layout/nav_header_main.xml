@@ -12,12 +12,12 @@
     android:paddingBottom="@dimen/margin_16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_profile"
+        android:id="@+id/img_logo"
         android:layout_width="84dp"
         android:layout_height="84dp"
         android:layout_marginTop="24dp"
         android:contentDescription="@string/nav_header_desc"
-        android:src="@drawable/ic_user_profile"
+        android:src ="@drawable/app_lcon"
         app:civ_border_color="@color/white"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_profile" />
+        app:layout_constraintTop_toBottomOf="@+id/img_logo" />
 
     <TextView
         android:id="@+id/tvEmail"

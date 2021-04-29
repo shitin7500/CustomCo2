@@ -28,7 +28,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,7 +52,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -70,8 +68,6 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.AutocompleteActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,7 +95,7 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     Button done;
     Place placeCust;
     String srcAdd = "";
-    Button cuurent;
+    Button current;
     ImageView iv_line;
     LinearLayout linSetLocation;
     SupportMapFragment mapFragment;
@@ -112,8 +108,8 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
     @Override
     public void onPlace(Place place) {
         this.placeCust = place;
-        if (cuurent != null) {
-            cuurent.setText(placeCust.getSrcAddress());
+        if (current != null) {
+            current.setText(placeCust.getSrcAddress());
         }
     }
 
@@ -217,18 +213,18 @@ public class SearchActivity extends AppCompatActivity implements GoogleApiClient
                 onBack();
             }
         });
-        cuurent = findViewById(R.id.cuurent);
+        current = findViewById(R.id.cuurent);
         linSetLocation = findViewById(R.id.lin_set_location);
         iv_line = findViewById(R.id.iv_line);
-        cuurent.setOnClickListener(new View.OnClickListener() {
+        current.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SearchActivity.this, PickLocation.class);
                 intent.putExtra("lat", loc.latitude);
                 intent.putExtra("lon", loc.longitude);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    cuurent.setTransitionName("current");
-                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this, cuurent, cuurent.getTransitionName());
+                    current.setTransitionName("current");
+                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(SearchActivity.this, current, current.getTransitionName());
                     startActivity(intent, optionsCompat.toBundle());
                 } else
                     startActivity(intent);
